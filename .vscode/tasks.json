@@ -1,0 +1,35 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "docker:up",
+      "type": "npm",
+      "script": "docker:up"
+    },
+    {
+      "label": "docker:down",
+      "type": "npm",
+      "script": "docker:down"
+    },
+    {
+      "label": "test",
+      "type": "npm",
+      "script": "test"
+    },
+    {
+      "label": "lint:check",
+      "type": "npm",
+      "script": "lint"
+    },
+    {
+      "label": "format:check",
+      "type": "npm",
+      "script": "format"
+    }
+  ],
+  "typescript.tsc.autoDetect": "off",
+  "grunt.autoDetect": "off",
+  "jake.autoDetect": "off",
+  "gulp.autoDetect": "off",
+  "npm.autoDetect": "off"
+}
