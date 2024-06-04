@@ -1,0 +1,28 @@
+<%- include('includes/head.ejs') %>
+<link rel="stylesheet" href="/css/content/dashboard.css">
+</head>
+
+<body>
+    <%- include('includes/navigation.ejs') %>
+    <div id="widgets">
+        <div id="news-widget">
+            These are news
+        </div>
+        <div id="weather-widget">
+            This is weather
+        </div>
+        <div id="apod-widget">
+            <img id="apod-img" src="<%= apodImageLink %>" alt="<%= apodImageAlt %>"></img>
+        </div>
+        <div id="traffic-widget">
+            This is traffic
+        </div>
+        <div id="todo-widget">
+            These are todo's
+        </div>
+        <div id="calendar-widget">
+            <p><%= getDailyAppointments  %></p>
+        </div>
+    </div>
+
+    <%- include('includes/end.ejs') %>

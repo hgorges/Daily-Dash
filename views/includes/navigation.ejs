@@ -1,0 +1,28 @@
+<div class="backdrop"></div>
+<div id="navigation">
+    <header class="main-header">
+        <button id="side-menu-toggle">Menu</button>
+        <nav class="main-header__nav" aria-label="Main Navigation">
+            <ul class="main-header__item-list">
+                <li class="main-header__item">
+                    <a class="<%= path === '/' ? 'active' : '' %>" href="/">Dashboard</a>
+                </li>
+                <li class="main-header__item">
+                    <a class="<%= path === '/news' ? 'active' : '' %>" href="/news">News</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+</div>
+
+<div id="page-content">
+    <nav class="mobile-nav" aria-label="Mobile Main Navigation">
+        <ul class="mobile-nav__item-list">
+            <li class="mobile-nav__item">
+                <a class="<%= path === '/' ? 'active' : '' %>" href="/">Dashboard</a>
+            </li>
+            <li class="mobile-nav__item">
+                <a class="<%= path === '/news' ? 'active' : '' %>" href="/news">News</a>
+            </li>
+        </ul>
+    </nav>
