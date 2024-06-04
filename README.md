@@ -2,6 +2,8 @@
 
 This repository functions as a versatile platform for experimenting with various technologies, including Docker, EJS, Google API and general web development methodologies.
 
+Due to its experimental nature, this repository will not serve as an application for production use. Its primary purpose is to explore and test new concepts rather than provide a fully functional solution.
+
 ## Getting Started
 
 ### Clone the repository
