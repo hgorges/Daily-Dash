@@ -1,6 +1,6 @@
 .mobile-nav {
     width: 30rem;
-    height: calc(50vh);
+    height: calc(100vh);
     max-width: 60%;
     position: fixed;
     left: 0;

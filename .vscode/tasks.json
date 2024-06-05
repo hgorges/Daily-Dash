@@ -4,7 +4,10 @@
     {
       "label": "docker:up",
       "type": "npm",
-      "script": "docker:up"
+      "script": "docker:up",
+      "problemMatcher": [
+        "$armcc5"
+      ]
     },
     {
       "label": "docker:down",
