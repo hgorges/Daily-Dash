@@ -12,7 +12,8 @@
     "format:check": "prettier . --check",
     "format:fix": "prettier . --write",
     "docker:up": "docker compose --env-file ./secrets/.env up",
-    "docker:down": "docker-compose --env-file ./secrets/.env down && docker rmi daily-dash postgres",
+    "docker:down": "docker-compose --env-file ./secrets/.env down",
+    "docker:rmi": "docker rmi daily-dash postgres",
     "migrate": "knex --knexfile ./out/db/knexfile.js migrate:latest",
     "seed": "knex --knexfile ./out/db/knexfile.js seed:run"
   },
