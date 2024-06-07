@@ -5,17 +5,13 @@
       "label": "docker:up",
       "type": "npm",
       "script": "docker:up",
-      "problemMatcher": [
-        "$armcc5"
-      ]
+      "problemMatcher": ["$armcc5"]
     },
     {
       "label": "docker:down",
       "type": "npm",
       "script": "docker:down",
-      "problemMatcher": [
-        "$armcc5"
-      ]
+      "problemMatcher": ["$armcc5"]
     },
     {
       "label": "test",
@@ -23,14 +19,19 @@
       "script": "test"
     },
     {
+      "label": "format:check",
+      "type": "npm",
+      "script": "format:check"
+    },
+    {
+      "label": "format:fix",
+      "type": "npm",
+      "script": "format:fix"
+    },
+    {
       "label": "lint:check",
       "type": "npm",
       "script": "lint"
-    },
-    {
-      "label": "format:check",
-      "type": "npm",
-      "script": "format"
     }
   ],
   "typescript.tsc.autoDetect": "off",
