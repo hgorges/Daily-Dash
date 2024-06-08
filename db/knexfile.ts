@@ -1,6 +1,6 @@
 import { Knex } from "knex";
 
-const config: Knex.Config = {
+const knexConfig: Knex.Config = {
     client: "pg",
     connection: {
         host: process.env.DB_HOST!,
@@ -19,4 +19,4 @@ const config: Knex.Config = {
     },
 };
 
-export default config;
+export default knexConfig;
