@@ -12,7 +12,10 @@ export const dashboardController = async (
     res.status(200).render('dashboard', {
         path: '/',
         ...(await newsModel.getNewsData()),
-        ...(await weatherModel.getWeatherData(req.session.username)),
+        ...(await weatherModel.getWeatherData(
+            req.session.username,
+            req.session.isHome
+        )),
         ...(await apodModel.getApodData()),
     });
 };

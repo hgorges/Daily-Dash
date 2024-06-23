@@ -32,7 +32,7 @@
                         <span class="weather-description"><%= w.description %> <img src="<%= w.iconUrl %>" alt="<%= w.description %>"></span>
                     <% }); %>
                 </div>
-                <div class="temperature-range">
+                <div id="temperature-range">
                     <p class="temperature-label"><%= summary %> in <%= place %>.</p>
                     <p class="temperature-label"><%= temp.min %>°C to <%= temp.max %>°C</p>
                 </div>

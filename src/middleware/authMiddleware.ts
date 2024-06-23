@@ -21,6 +21,7 @@ export async function loginUser(
 
     req.session.username = user.username;
     req.session.isAuthenticated = true;
+    req.session.isHome = true;
     res.redirect('/');
 }
 

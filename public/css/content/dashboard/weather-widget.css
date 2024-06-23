@@ -33,7 +33,7 @@
     z-index: 1;
 }
 
-.temperature-range {
+#temperature-range {
     display: flex;
     flex-direction: column;
     text-align: center;

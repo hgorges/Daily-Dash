@@ -13,6 +13,7 @@ import { User } from '../models/userModel';
 export type AuthSession = Session & {
     username: string;
     isAuthenticated: boolean;
+    isHome: boolean;
 };
 
 export type AuthRequest = Request & {

@@ -36,15 +36,20 @@ const weatherModel = {
         return weatherApiKey;
     },
 
-    async getWeatherData(username: string): Promise<WeatherData> {
+    async getWeatherData(
+        username: string,
+        isHome: boolean
+    ): Promise<WeatherData> {
         const { api_key } = await this.getWeatherApiKey();
         assert(api_key, 'Weather API key not found');
 
         const user = await userModel.getUserByUsername(username);
         assert(user, 'User not found');
 
+        const gps = isHome ? user.home_gps : user.work_gps;
+
         const response = await axios.get(
-            `https://api.openweathermap.org/data/3.0/onecall?lat=${user.home_gps.x}&lon=${user.home_gps.y}&date=${new Date().toISOString().substring(0, 10)}&appid=${api_key}&units=metric`
+            `https://api.openweathermap.org/data/3.0/onecall?lat=${gps.x}&lon=${gps.y}&date=${new Date().toISOString().substring(0, 10)}&appid=${api_key}&units=metric`
         );
 
         const weatherData: WeatherData = response.data.daily[0];
@@ -55,7 +60,7 @@ const weatherModel = {
         }));
 
         const placeResponse = await axios.get(
-            `http://api.openweathermap.org/geo/1.0/reverse?lat=${user.home_gps.x}&lon=${user.home_gps.y}&limit=1&appid=${api_key}`
+            `http://api.openweathermap.org/geo/1.0/reverse?lat=${gps.x}&lon=${gps.y}&limit=1&appid=${api_key}`
         );
 
         return {
