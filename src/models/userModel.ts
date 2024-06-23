@@ -23,7 +23,7 @@ const userModel = {
 
         const persistedData = await knex('users')
             .insert({
-                username: user.username,
+                username: user.username.toLocaleLowerCase(),
                 password: await this.hashPassword(password, salt),
                 first_name: user.first_name,
                 last_name: user.last_name,
@@ -54,7 +54,9 @@ const userModel = {
         username: string,
         password: string
     ): Promise<User | null> {
-        const user = await db<User>('users').where({ username }).first();
+        const user = await db<User>('users')
+            .where({ username: username.toLocaleLowerCase() })
+            .first();
 
         if (!user) {
             return null;
@@ -69,7 +71,9 @@ const userModel = {
     },
 
     async getUserByUsername(username: string): Promise<User | undefined> {
-        const result = await db<User>('users').where({ username }).first();
+        const result = await db<User>('users')
+            .where({ username: username.toLocaleLowerCase() })
+            .first();
         return result;
     },
 };
