@@ -1,28 +1,84 @@
 <%- include('includes/head.ejs') %>
-<link rel="stylesheet" href="/css/content/dashboard.css">
+<link rel="stylesheet" href="/css/content/dashboard/dashboard.css">
+<link rel="stylesheet" href="/css/content/dashboard/news-widget.css">
+<link rel="stylesheet" href="/css/content/dashboard/weather-widget.css">
+<link rel="stylesheet" href="/css/content/dashboard/traffic-widget.css">
+<link rel="stylesheet" href="/css/content/dashboard/todo-widget.css">
+<link rel="stylesheet" href="/css/content/dashboard/calendar-widget.css">
+<link rel="stylesheet" href="/css/content/dashboard/apod-widget.css">
 </head>
 
 <body>
     <%- include('includes/navigation.ejs') %>
+
     <div id="widgets">
-        <div id="news-widget">
-            These are news
+        <div class='widget' id="news-widget">
+            <h2 class="heading">News</h2>
+            <div class="content">
+                <% newsEntries.forEach(entry => { %>
+                    <a class="news-links" href="<%= entry.link %>">
+                        <div class="news-entry">
+                            <h3><%= entry.headline %></h3>
+                        </div>
+                    </a>
+                <% }); %>
+            </div>
         </div>
-        <div id="weather-widget">
-            This is weather
+        <div class='widget' id="weather-widget">
+            <h2 class="heading">Weather</h2>
+            <div class="content">
+                <div class="weather-descriptions">
+                    <% weather.forEach(w => { %>
+                        <span class="weather-description"><%= w.description %> <img src="<%= w.iconUrl %>" alt="<%= w.description %>"></span>
+                    <% }); %>
+                </div>
+                <div class="temperature-range">
+                    <p class="temperature-label"><%= summary %>.</p>
+                    <p class="temperature-label"><%= temp.min %>°C to <%= temp.max %>°C</p>
+                </div>
+                <div class="temperature-row">
+                    <div class="temperature-column<%= temp.morn <= 0 ? ' cold-weather' : temp.morn >= 30 ? ' warm-weather' : '' %>">
+                        <p>Morning</p>
+                        <p><%= temp.morn %>°C</p>
+                    </div>
+                    <div class="temperature-column<%= temp.day <= 0 ? ' cold-weather' : temp.day >= 30 ? ' warm-weather' : '' %>">
+                        <p>Day</p>
+                        <p><%= temp.day %>°C</p>
+                    </div>
+                    <div class="temperature-column<%= temp.eve <= 0 ? ' cold-weather' : temp.eve >= 30 ? ' warm-weather' : '' %>">
+                        <p>Evening</p>
+                        <p><%= temp.eve %>°C</p>
+                    </div>
+                    <div class="temperature-column<%= temp.night <= 0 ? ' cold-weather' : temp.night >= 30 ? ' warm-weather' : '' %>">
+                        <p>Night</p>
+                        <p><%= temp.night %>°C</p>
+                    </div>
+                </div>
+                <div class="weather-info-row">
+                    <p class="weather-info-column"><span class="weather-info-icon">💧</span> Humidity: <%= humidity %>%</p>
+                    <p class="weather-info-column"><span class="weather-info-icon">🌞</span> UV Index: <%= uvi %></p>
+                    <p class="weather-info-column"><span class="weather-info-icon">☁️</span> Cloud cover: <%= clouds %>%</p>
+                    <p class="weather-info-column"><span class="weather-info-icon">💨</span> Wind speed: <%= wind_speed %> m/s</p>
+                </div>
+            </div>
         </div>
-        <div id="apod-widget">
-            <img id="apod-img" src="<%= apodImageLink %>" alt="<%= apodImageAlt %>"></img>
+        <div class='widget' id="traffic-widget">
+            <h2 class="heading">Traffic</h2>
         </div>
-        <div id="traffic-widget">
-            This is traffic
+        <div class='widget' id="todo-widget">
+            <h2 class="heading">Todo</h2>
         </div>
-        <div id="todo-widget">
-            These are todo's
+        <div class='widget' id="calendar-widget">
+            <h2 class="heading">Calendar</h2>
         </div>
-        <div id="calendar-widget">
-            <p><%= getDailyAppointments  %></p>
+        <div class='widget' id="apod-widget">
+            <h2 class="heading" id="apod-heading">Astronomy Picture of the Day</h2>
+            <p id="apod-title"><%= apodTitle %></p>
+            <a id="apod-link" href="<%= apodLink %>">
+                <img id="apod-image" src="<%= apodImageLink %>" alt="<%= apodTitle %>"></img>
+            </a>
         </div>
     </div>
 
+    <script src="js/dashboard.js"></script>
     <%- include('includes/end.ejs') %>

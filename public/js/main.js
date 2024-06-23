@@ -1,26 +1,45 @@
-const backdrop = document.querySelector(".backdrop");
-const sideDrawer = document.querySelector(".mobile-nav");
-const pageContent = document.querySelector("#page-content");
-const menuToggle = document.querySelector("#side-menu-toggle");
+const backdrop = document.querySelector('.backdrop');
+const sideDrawer = document.querySelector('.mobile-nav');
+const pageContent = document.querySelector('#page-content');
+const menuToggle = document.querySelector('#side-menu-toggle');
 
-function backdropClickHandler() {
-    backdrop.style.display = "none";
-    sideDrawer.classList.remove("open");
-    pageContent.classList.remove("background");
+function hideBackdrop() {
+    backdrop.style.display = 'none';
+    sideDrawer.classList.remove('open');
+    pageContent.classList.remove('background');
+}
+
+function showBackdrop() {
+    backdrop.style.display = 'block';
+    sideDrawer.classList.add('open');
+    pageContent.classList.add('background');
 }
 
 function menuToggleClickHandler() {
-    backdrop.style.display = "block";
-    sideDrawer.classList.add("open");
-    pageContent.classList.add("background");
+    if (sideDrawer.classList.contains('open')) {
+        hideBackdrop();
+    } else {
+        showBackdrop();
+    }
 }
 
-backdrop.addEventListener("click", backdropClickHandler);
-menuToggle.addEventListener("click", menuToggleClickHandler);
+if (backdrop) {
+    backdrop.addEventListener('click', hideBackdrop);
+}
 
-// Close side drawer when window is resized
-window.addEventListener("resize", function () {
+if (menuToggle) {
+    menuToggle.addEventListener('click', menuToggleClickHandler);
+}
+
+window.addEventListener('resize', function () {
     if (window.innerWidth >= 768) {
-        backdropClickHandler();
+        hideBackdrop();
+        apodWidgetClickHandler();
     }
 });
+
+// Custom area
+const dashboardWidgets = document.querySelector('#widgets');
+if (dashboardWidgets) {
+    dashboardWidgets.addEventListener('click', hideBackdrop);
+}

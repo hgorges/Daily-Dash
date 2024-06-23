@@ -1,0 +1,32 @@
+.news-entry {
+    padding: 10px;
+    border-radius: 5px;
+    color: var(--primary-color);
+    background-color: var(--secondary-color);
+    box-sizing: border-box;
+}
+
+.news-entry h3 {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.news-links {
+    color: inherit;
+    text-decoration: none;
+}
+
+a div.news-entry:hover {
+    color: var(--background-color);
+}
+
+.news-entry:hover {
+    background-color: var(--primary-color);
+}
+
+@media (max-height: 1199px) {
+    .news-entry {
+        font-size: 0.8em;
+        padding: 5px;
+    }
+}

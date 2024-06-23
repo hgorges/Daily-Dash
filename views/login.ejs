@@ -1,0 +1,23 @@
+<%- include('includes/head.ejs') %>
+<link rel="stylesheet" href="/css/content/login.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="main-header">
+        <div id="daily-dash-banner">
+            <p>Daily Dash</p>
+        </div>
+    </header>
+    <div class="login-page">
+        <form action="/login" method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <%- include('includes/end.ejs') %>

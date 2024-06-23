@@ -5,10 +5,21 @@
         <nav class="main-header__nav" aria-label="Main Navigation">
             <ul class="main-header__item-list">
                 <li class="main-header__item">
-                    <a class="<%= path === '/' ? 'active' : '' %>" href="/">Dashboard</a>
+                    <a class="<%= path === '/' ? 'active' : '' %>" href="/">
+                        Dashboard
+                    </a>
                 </li>
                 <li class="main-header__item">
-                    <a class="<%= path === '/news' ? 'active' : '' %>" href="/news">News</a>
+                    <a class="<%= path === '/news' ? 'active' : '' %>" href="/news">
+                        News
+                    </a>
+                </li>
+            </ul>
+            <ul class="main-header__logout">
+                <li class="main-header__item" id="main-header__last-item">
+                    <a class="<%= path === '/logout' %>" href="/logout">
+                        Logout
+                    </a>
                 </li>
             </ul>
         </nav>
@@ -19,10 +30,23 @@
     <nav class="mobile-nav" aria-label="Mobile Main Navigation">
         <ul class="mobile-nav__item-list">
             <li class="mobile-nav__item">
-                <a class="<%= path === '/' ? 'active' : '' %>" href="/">Dashboard</a>
+                <a class="<%= path === '/' ? 'active' : '' %>" href="/">
+                    Dashboard
+                </a>
             </li>
             <li class="mobile-nav__item">
-                <a class="<%= path === '/news' ? 'active' : '' %>" href="/news">News</a>
+                <a class="<%= path === '/news' ? 'active' : '' %>" href="/news">
+                    News
+                </a>
+            </li>
+        </ul>
+        <ul class="mobile-nav__logout">
+            <li class="mobile-nav__item">
+                <a class="<%= path === '/logout' %>" href="/logout">
+                    Logout
+                </a>
             </li>
         </ul>
     </nav>
+
+<!-- closing div tag in end.ejs -->

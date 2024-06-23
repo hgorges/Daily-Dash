@@ -1,8 +1,16 @@
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700");
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+
+:root {
+    --primary-color: #244855;
+    --secondary-color: #90aead;
+    --accent-color: #e64833;
+    --background-color: #fbe9d0;
+}
 
 * {
     margin: 0;
     padding: 0;
+    /* box-sizing: border-box; */
 }
 
 html {
@@ -10,32 +18,36 @@ html {
 }
 
 body {
-    font-family: "Open Sans", sans-serif;
-    background-color: #fffaea;
-    height: 100%;
+    font-family: 'Open Sans', sans-serif;
+    background-color: var(--background-color);
+}
+
+h2 {
+    color: var(--primary-color);
+    font-size: 2em;
+    padding: 0.2em;
+}
+
+p {
+    color: var(--primary-color);
+    font-size: 1.2em;
+    padding: 0.2em;
 }
 
 .footer {
+    display: flex;
     height: 2rem;
-    background-color: #1f557c;
-    font-size: small;
-    position: fixed;
-    bottom: 0px;
-    width: 100%;
+    background-color: var(--primary-color);
+    justify-content: center;
+    align-items: center;
 }
 
-.footer-content {
-    color: white;
-    display: grid;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    border-top: 2px solid #f9cf68;
+.footer > p {
+    color: var(--background-color);
+    font-size: small;
 }
 
 .not-found {
-    height: 100%;
-    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -44,10 +56,17 @@ body {
 #page-content {
     display: grid;
     grid-template-rows: 1fr;
+    width: 100vw;
     height: calc(100vh - 3.5rem - 2rem);
 }
 
 #page-content.background {
-    background-color: #d4b897;
+    background-color: var(--background-color);
     transition: background-color 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    #page-content {
+        height: calc(100svh - 3.5rem - 2rem);
+    }
 }
