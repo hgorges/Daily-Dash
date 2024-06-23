@@ -1,4 +1,4 @@
-import { Knex } from "knex";
+import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
     const dbResult = await knex.raw(/* sql */ `SELECT current_database()`);
