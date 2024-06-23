@@ -1,7 +1,7 @@
-import { Knex } from "knex";
+import { Knex } from 'knex';
 
 const knexConfig: Knex.Config = {
-    client: "pg",
+    client: 'pg',
     connection: {
         host: process.env.DB_HOST!,
         port: parseInt(process.env.DB_PORT!),
@@ -12,10 +12,10 @@ const knexConfig: Knex.Config = {
         timezone: process.env.DB_TIMEZONE!,
     },
     migrations: {
-        directory: "./migrations",
+        directory: './migrations',
     },
     seeds: {
-        directory: "./seeds",
+        directory: './seeds',
     },
 };
 
