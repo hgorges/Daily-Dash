@@ -1,46 +1,46 @@
-// import bcrypt from "bcrypt";
-// import userModel from "../models/userModel";
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Response } from 'express';
+import userModel from '../models/userModel';
+import { AuthRequest } from '../utils/utils';
 
-async function basicAuth(
-    req: Request,
+export async function loginUser(
+    req: AuthRequest,
+    res: Response
+): Promise<void> {
+    const { username, password } = req.body;
+
+    if (username.toLowerCase() === 'system') {
+        res.redirect('/login');
+        return;
+    }
+
+    const user = await userModel.getUserForLogin(username, password);
+    if (!user) {
+        res.redirect('/login');
+        return;
+    }
+
+    req.session.username = user.username;
+    req.session.isAuthenticated = true;
+    res.redirect('/');
+}
+
+export async function logoutUser(
+    req: AuthRequest,
+    res: Response,
+    _next: NextFunction
+): Promise<void> {
+    req.session.destroy(() => res.redirect('/login'));
+}
+
+export async function checkAuthentication(
+    req: AuthRequest,
     res: Response,
     next: NextFunction
 ): Promise<void> {
-    next();
-
-    // const authHeader = req.headers.authorization;
-    // if (authHeader == null || !(authHeader ?? "").startsWith("Basic ")) {
-    //     res.status(400).send({ error: "Wrong authentication method" });
-    //     return;
-    // }
-
-    // const base64Credentials = authHeader.split(" ")[1];
-    // const credentials = Buffer.from(base64Credentials, "base64").toString(
-    //     "utf-8"
-    // );
-    // const [username, password] = credentials.split(":");
-
-    // if (username.toLowerCase() === "system") {
-    //     res.status(423).send({ error: "Locked account" });
-    //     return;
-    // }
-
-    // try {
-    //     const user = await userModel.getUserByUsername(username.toLowerCase());
-    //     if (user == null || !(await bcrypt.compare(password, user.password))) {
-    //         res.status(401).send({ error: "Invalid credentials" });
-    //         return;
-    //     }
-
-    //     req.headers.user = user;
-    // } catch (error) {
-    //     console.error(error);
-    //     res.status(500).send({ error: "Internal Server Error" });
-    //     return;
-    // }
-
-    // next();
+    if (req.session.isAuthenticated) {
+        req.user = await userModel.getUserByUsername(req.session.username);
+        next();
+    } else {
+        res.redirect('/login');
+    }
 }
-
-export { basicAuth };

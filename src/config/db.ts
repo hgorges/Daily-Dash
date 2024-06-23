@@ -1,4 +1,4 @@
-import { ClientConfig, Pool } from "pg";
+import { ClientConfig, Pool } from 'pg';
 
 const config: ClientConfig = {
     user: process.env.DB_USERNAME as string,

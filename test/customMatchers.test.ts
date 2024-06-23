@@ -1,8 +1,8 @@
-import type { MatcherFunction } from "expect";
+import type { MatcherFunction } from 'expect';
 
 const toBeValidUsername: MatcherFunction<[]> = function (username: unknown) {
-    if (typeof username !== "string") {
-        throw new TypeError("Username must be of type string!");
+    if (typeof username !== 'string') {
+        throw new TypeError('Username must be of type string!');
     }
     const valid = username.length > 5 && username.length < 20;
 
@@ -26,9 +26,9 @@ declare global {
     }
 }
 
-describe("custom matchers test", () => {
-    it("check for valid username", () => {
-        const someUsername = "john_doe";
+describe('custom matchers test', () => {
+    it('check for valid username', () => {
+        const someUsername = 'john_doe';
         expect(someUsername).toBeValidUsername();
     });
 });

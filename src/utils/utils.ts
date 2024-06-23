@@ -1,4 +1,4 @@
-function castPromiseToVoid<Args extends unknown[]>(
+export function castPromiseToVoid<Args extends unknown[]>(
     fn: (...args: Args) => Promise<unknown>
 ): (...args: Args) => void {
     return (...args) => {
@@ -6,4 +6,16 @@ function castPromiseToVoid<Args extends unknown[]>(
     };
 }
 
-export { castPromiseToVoid };
+import { Request } from 'express';
+import { Session } from 'express-session';
+import { User } from '../models/userModel';
+
+export type AuthSession = Session & {
+    username: string;
+    isAuthenticated: boolean;
+};
+
+export type AuthRequest = Request & {
+    session?: AuthSession;
+    user?: User;
+};
