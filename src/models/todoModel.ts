@@ -1,28 +1,46 @@
-import pool from "../config/db";
-import { TodoistApi } from "@doist/todoist-api-typescript";
+import { Task, TodoistApi } from '@doist/todoist-api-typescript';
+import assert from 'node:assert';
+import { db } from '../server';
 
 const todoModel = {
-    getApi(apiKey: string) {
+    getTodoistApi(apiKey: string) {
         return new TodoistApi(apiKey);
     },
-    async getApiKey(username: string) {
-        const query = /* sql */ `SELECT "todoist_api_key" FROM "users" WHERE "username" = $1`;
-        const values = [username];
 
-        const { rows } = await pool.query(query, values);
-        return rows[0];
+    async getApiKey(username: string): Promise<string | undefined> {
+        const { api_key } = await db('api_keys')
+            .join('users', 'api_keys.fk_user_id', '=', 'users.user_id')
+            .where({ username })
+            .first();
+
+        return api_key;
     },
-    async getDueTasksForToday(apiKey: string) {
-        return this.getApi(apiKey)
-            .getTasks({ filter: "overdue | today" })
-            .then((tasks) => console.log(tasks))
-            .catch((err) => console.log(err));
+
+    async getDueTodosForToday(username: string): Promise<Task[]> {
+        const api_key = await this.getApiKey(username);
+        assert(api_key, 'Todoist api_key not found');
+
+        return this.getTodoistApi(api_key).getTasks({
+            filter: 'overdue | today',
+        });
     },
-    async getDueTasksForThisWeek(apiKey: string) {
-        return this.getApi(apiKey)
-            .getTasks({ filter: "overdue | today | this week" })
-            .then((tasks) => console.log(tasks))
-            .catch((err) => console.log(err));
+
+    async completeTodo(username: string, id: string): Promise<void> {
+        const api_key = await this.getApiKey(username);
+        assert(api_key, 'Todoist api_key not found');
+
+        this.getTodoistApi(api_key).closeTask(id);
+    },
+
+    async postponeTodo(username: string, id: string): Promise<void> {
+        const api_key = await this.getApiKey(username);
+        assert(api_key, 'Todoist api_key not found');
+
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        this.getTodoistApi(api_key).updateTask(id, {
+            dueDate: tomorrow.toISOString().slice(0, 10),
+        });
     },
 };
 

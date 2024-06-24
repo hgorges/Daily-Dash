@@ -129,6 +129,46 @@
     justify-content: center;
 }
 
+.uvi-low {
+    background-color: var(--low);
+}
+
+.uvi-moderate {
+    background-color: var(--moderate);
+}
+
+.uvi-high {
+    background-color: var(--high);
+}
+
+.uvi-very-high {
+    background-color: var(--very-high);
+}
+
+.uvi-extreme {
+    background-color: var(--extreme);
+}
+
+.wind-calm-light-breeze {
+    background-color: var(--low);
+}
+
+.wind-gentle-moderate-breeze {
+    background-color: var(--moderate);
+}
+
+.wind-fresh-strong-breeze {
+    background-color: var(--high);
+}
+
+.wind-near-gale-gale {
+    background-color: var(--very-high);
+}
+
+.wind-strong-gale-hurricane {
+    background-color: var(--extreme);
+}
+
 @media (max-width: 768px) {
     .content {
         gap: 10px;

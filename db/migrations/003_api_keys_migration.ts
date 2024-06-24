@@ -2,13 +2,19 @@ import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
     await knex.schema.createTable('api_keys', (table) => {
-        table.string('api_name', 30).primary().notNullable();
+        table
+            .uuid('api_id')
+            .defaultTo(knex.raw(/* sql */ `uuid_generate_v4()`))
+            .primary()
+            .notNullable();
+        table.string('api_name', 30).notNullable();
         table.string('api_key', 255).notNullable();
         table
             .uuid('fk_user_id')
             .references('user_id')
             .inTable('users')
             .nullable();
+        table.unique(['api_name', 'fk_user_id']);
     });
     await knex.raw(/* sql */ `ALTER TABLE "api_keys" OWNER TO postgres;`);
 }

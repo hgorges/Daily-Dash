@@ -1,5 +1,5 @@
-import assert from 'assert';
 import axios from 'axios';
+import assert from 'node:assert';
 import { db } from '../server';
 import userModel from './userModel';
 
@@ -23,8 +23,10 @@ type WeatherData = {
     };
     humidity: number;
     uvi: number;
+    uvi_color: string;
     clouds: number;
     wind_speed: number;
+    wind_speed_color: string;
 };
 
 const weatherModel = {
@@ -63,8 +65,37 @@ const weatherModel = {
             `http://api.openweathermap.org/geo/1.0/reverse?lat=${gps.x}&lon=${gps.y}&limit=1&appid=${api_key}`
         );
 
+        let uvi_color = '';
+        if (weatherData.uvi < 3) {
+            uvi_color = 'uvi-low';
+        } else if (weatherData.uvi < 6) {
+            uvi_color = 'uvi-moderate';
+        } else if (weatherData.uvi < 8) {
+            uvi_color = 'uvi-high';
+        } else if (weatherData.uvi < 11) {
+            uvi_color = 'uvi-very-high';
+        } else {
+            uvi_color = 'uvi-extreme';
+        }
+
+        weatherData.wind_speed = Math.floor(weatherData.wind_speed * 3.6);
+        let wind_speed_color = '';
+        if (weatherData.wind_speed <= 11) {
+            wind_speed_color = 'wind-calm-light-breeze';
+        } else if (weatherData.wind_speed <= 28) {
+            wind_speed_color = 'wind-gentle-moderate-breeze';
+        } else if (weatherData.wind_speed <= 49) {
+            wind_speed_color = 'wind-fresh-strong-breeze';
+        } else if (weatherData.wind_speed <= 88) {
+            wind_speed_color = 'wind-near-gale-gale';
+        } else {
+            wind_speed_color = 'wind-strong-gale-hurricane';
+        }
+
         return {
             ...weatherData,
+            uvi_color,
+            wind_speed_color,
             place: placeResponse.data[0].name,
         };
     },

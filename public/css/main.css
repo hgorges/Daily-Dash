@@ -5,12 +5,16 @@
     --secondary-color: #90aead;
     --accent-color: #e64833;
     --background-color: #fbe9d0;
+    --low: #a4d68e;
+    --moderate: #f9ecb0;
+    --high: #ffab6e;
+    --very-high: #f37575;
+    --extreme: #a890d3;
 }
 
 * {
     margin: 0;
     padding: 0;
-    /* box-sizing: border-box; */
 }
 
 html {

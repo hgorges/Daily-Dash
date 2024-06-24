@@ -55,18 +55,54 @@
                     </div>
                 </div>
                 <div class="weather-info-row">
-                    <p class="weather-info-column"><span class="weather-info-icon">💧</span> Humidity: <%= humidity %>%</p>
-                    <p class="weather-info-column"><span class="weather-info-icon">🌞</span> UV Index: <%= uvi %></p>
-                    <p class="weather-info-column"><span class="weather-info-icon">☁️</span> Cloud cover: <%= clouds %>%</p>
-                    <p class="weather-info-column"><span class="weather-info-icon">💨</span> Wind speed: <%= wind_speed %> m/s</p>
+                    <p class="weather-info-column"><span class="weather-info-icon"><i class="fas fa-tint"></i></span> Humidity: <%= humidity %>%</p>
+                    <p class="weather-info-column"><span class="weather-info-icon <%= uvi_color %>"><i class="fas fa-sun"></i></span> UV Index: <%= uvi %></p>
+                    <p class="weather-info-column"><span class="weather-info-icon"><i class="fas fa-cloud"></i></span> Cloud cover: <%= clouds %>%</p>
+                    <p class="weather-info-column"><span class="weather-info-icon <%= wind_speed_color %>"><i class="fas fa-wind"></i></span> Wind speed: <%= wind_speed %> km/h</p>
                 </div>
             </div>
         </div>
         <div class='widget' id="traffic-widget">
             <h2 class="heading">Traffic</h2>
+            <div class="content">
+                <div class="route-info-container">
+                    <p class="route-info"><i class="<%= isHome ? 'fas fa-home' : 'fas fa-briefcase' %> route-info-icon"></i><%= trafficData.from %></p>
+                    <p class="route-info"><i class="<%= !isHome ? 'fas fa-home' : 'fas fa-briefcase' %> route-info-icon"></i><%= trafficData.to %></p>
+                </div>
+                <div class="routes">
+                    <ul>
+                        <% trafficData.routes.forEach(function(route) { %>
+                            <li>
+                                <p><strong>Route:</strong> <%= route.summary %></p>
+                                <p><strong>Distance:</strong> <%= (route.distance / 1000).toFixed(1) %> km</p>
+                                <p><strong>Duration:</strong> <%= Math.floor(route.duration / 60) %> min</p>
+                            </li>
+                        <% }); %>
+                    </ul>
+                </div>
+            </div>
         </div>
         <div class='widget' id="todo-widget">
             <h2 class="heading">Todo</h2>
+            <div class="content">
+                <div id="todo-items">
+                    <% todos.forEach(todo => { %>
+                        <div class="todo-item" id="<%= todo.id %>">
+                            <h3><%= todo.content %></h3>
+                        </div>
+                    <% }); %>
+                </div>
+                <div id="drop-zones-wrapper">
+                    <div id="drop-zones">
+                        <div id="completed-zone">
+                            Drop here to complete
+                        </div>
+                        <div id="postponed-zone">
+                            Drop here to postpone
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class='widget' id="calendar-widget">
             <h2 class="heading">Calendar</h2>

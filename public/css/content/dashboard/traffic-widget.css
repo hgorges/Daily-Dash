@@ -1,0 +1,50 @@
+.route-info-container {
+    background-color: var(--background-color);
+    border-left: 4px solid var(--primary-color);
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.route-info {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin: 5px 0;
+    font-size: 1.1em;
+}
+
+.route-info-icon {
+    width: 25px;
+    margin-right: 8px;
+    display: inline-block;
+    text-align: center;
+}
+
+.routes ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding: 0;
+}
+
+.routes li {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border-radius: 20px;
+    padding: 5px 10px;
+    margin: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    display: inline-flex;
+    align-items: center;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.routes li p {
+    margin: 0;
+}
+
+.routes li p strong {
+    color: var(--primary-color);
+}

@@ -1,6 +1,8 @@
 import { NextFunction, Response } from 'express';
 import apodModel from '../models/apodModel';
 import newsModel from '../models/newsModel';
+import todoModel from '../models/todoModel';
+import trafficModel from '../models/trafficModel';
 import weatherModel from '../models/weatherModel';
 import { AuthRequest } from '../utils/utils';
 
@@ -16,6 +18,12 @@ export const dashboardController = async (
             req.session.username,
             req.session.isHome
         )),
+        isHome: req.session.isHome,
+        trafficData: await trafficModel.getTrafficData(
+            req.session.isHome,
+            req.user
+        ),
+        todos: await todoModel.getDueTodosForToday(req.session.username),
         ...(await apodModel.getApodData()),
     });
 };

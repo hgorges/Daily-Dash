@@ -43,7 +43,88 @@ temperatureRange.addEventListener('click', function () {
         });
 });
 
+function completeTodo() {
+    const todoItems = document.querySelectorAll('.todo-item');
+
+    todoItems.forEach((item) => {
+        item.setAttribute('draggable', true);
+        item.addEventListener('dragstart', function (e) {
+            e.dataTransfer.setData('text/plain', item.id);
+        });
+    });
+
+    const completedZone = document.getElementById('completed-zone');
+    completedZone.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        completedZone.classList.add('drag-over');
+    });
+
+    completedZone.addEventListener('dragleave', () => {
+        completedZone.classList.remove('drag-over');
+    });
+
+    completedZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    });
+
+    completedZone.addEventListener('drop', function (e) {
+        e.preventDefault();
+        completedZone.classList.remove('drag-over');
+        const id = e.dataTransfer.getData('text/plain');
+        fetch(`/todos/${id}/complete`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((_response) => {
+                const item = document.getElementById(id);
+                item.style.display = 'none';
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    });
+
+    const postponedZone = document.getElementById('postponed-zone');
+    postponedZone.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        postponedZone.classList.add('drag-over');
+    });
+
+    postponedZone.addEventListener('dragleave', () => {
+        postponedZone.classList.remove('drag-over');
+    });
+
+    postponedZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    });
+
+    postponedZone.addEventListener('drop', function (e) {
+        e.preventDefault();
+        postponedZone.classList.remove('drag-over');
+        const id = e.dataTransfer.getData('text/plain');
+        fetch(`/todos/${id}/postpone`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((_response) => {
+                const item = document.getElementById(id);
+                item.style.display = 'none';
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     // Trigger resize event to set initial height of APOD link
     window.dispatchEvent(new Event('resize'));
+
+    completeTodo();
 });

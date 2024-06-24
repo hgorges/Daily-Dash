@@ -1,6 +1,7 @@
 import express, { NextFunction, Response } from 'express';
 import { dashboardController } from '../controller/dashboard';
 import { googleAuthController } from '../controller/google-auth';
+import todoModel from '../models/todoModel';
 import { AuthRequest, castPromiseToVoid } from '../utils/utils';
 
 const router = express.Router();
@@ -16,7 +17,25 @@ router.post('/switch-location', ((
     _next: NextFunction
 ) => {
     req.session.isHome = !req.session.isHome;
-    res.redirect('/');
+    res.status(200).send();
+}) as express.RequestHandler);
+
+router.patch('/todos/:id/complete', ((
+    req: AuthRequest,
+    res: Response,
+    _next: NextFunction
+) => {
+    todoModel.completeTodo(req.session.username, req.params.id);
+    res.status(200).send();
+}) as express.RequestHandler);
+
+router.patch('/todos/:id/postpone', ((
+    req: AuthRequest,
+    res: Response,
+    _next: NextFunction
+) => {
+    todoModel.postponeTodo(req.session.username, req.params.id);
+    res.status(200).send();
 }) as express.RequestHandler);
 
 router.get('/google-auth', castPromiseToVoid(googleAuthController));

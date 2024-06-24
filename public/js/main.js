@@ -4,15 +4,19 @@ const pageContent = document.querySelector('#page-content');
 const menuToggle = document.querySelector('#side-menu-toggle');
 
 function hideBackdrop() {
-    backdrop.style.display = 'none';
-    sideDrawer.classList.remove('open');
-    pageContent.classList.remove('background');
+    if (backdrop && sideDrawer && pageContent) {
+        backdrop.style.display = 'none';
+        sideDrawer.classList.remove('open');
+        pageContent.classList.remove('background');
+    }
 }
 
 function showBackdrop() {
-    backdrop.style.display = 'block';
-    sideDrawer.classList.add('open');
-    pageContent.classList.add('background');
+    if (backdrop && sideDrawer && pageContent) {
+        backdrop.style.display = 'block';
+        sideDrawer.classList.add('open');
+        pageContent.classList.add('background');
+    }
 }
 
 function menuToggleClickHandler() {
@@ -34,7 +38,6 @@ if (menuToggle) {
 window.addEventListener('resize', function () {
     if (window.innerWidth >= 768) {
         hideBackdrop();
-        apodWidgetClickHandler();
     }
 });
 

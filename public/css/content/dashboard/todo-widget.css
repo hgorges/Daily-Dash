@@ -1,0 +1,111 @@
+#todo-widget > .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+#todo-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.todo-item {
+    align-items: center;
+    border: 1px solid var(--secondary-color);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    transition:
+        transform 0.2s ease,
+        background-color 0.3s ease;
+    cursor: grab;
+    background-color: var(--secondary-color);
+}
+
+.todo-item h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: var(--primary-color);
+}
+
+.todo-item:active {
+    cursor: grabbing;
+}
+
+.todo-item:hover {
+    transform: translateY(-5px);
+    background-color: var(--primary-color);
+}
+
+.todo-item:hover h3 {
+    color: var(--background-color);
+}
+
+#drop-zones-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+#drop-zones {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+#completed-zone,
+#postponed-zone {
+    border: 2px dashed var(--secondary-color);
+    color: var(--primary-color);
+    background-color: var(--background-color);
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 8px;
+    text-align: center;
+    transition:
+        background-color 0.3s ease,
+        border-color 0.3s ease;
+}
+
+#completed-zone:hover,
+#postponed-zone:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--primary-color);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#completed-zone.drag-over,
+#postponed-zone.drag-over {
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+@media (max-height: 1199px) and (min-width: 769px) {
+    .todo-item h3 {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 768px) {
+    .widget {
+        margin: 10px;
+    }
+
+    #todo-widget .heading {
+        font-size: 1.5em;
+    }
+
+    .todo-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .todo-item h3 {
+        font-size: 1em;
+    }
+}
