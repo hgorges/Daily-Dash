@@ -30,7 +30,10 @@ export async function logoutUser(
     res: Response,
     _next: NextFunction
 ): Promise<void> {
-    req.session.destroy(() => res.redirect('/login'));
+    req.session.destroy(() => {
+        res.clearCookie('connect.sid');
+        res.redirect('/login');
+    });
 }
 
 export async function checkAuthentication(
