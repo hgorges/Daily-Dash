@@ -1,5 +1,6 @@
 import { NextFunction, Response } from 'express';
 import apodModel from '../models/apodModel';
+import calendarModel from '../models/calendarModel';
 import newsModel from '../models/newsModel';
 import todoModel from '../models/todoModel';
 import trafficModel from '../models/trafficModel';
@@ -24,6 +25,8 @@ export const dashboardController = async (
             req.user
         ),
         todos: await todoModel.getDueTodosForToday(req.session.username),
+        events: await calendarModel.getCalendarEvents(req),
+        googleCalendarAccessToken: req.session.googleCalendarAccessToken,
         ...(await apodModel.getApodData()),
     });
 };

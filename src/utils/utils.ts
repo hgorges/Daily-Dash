@@ -14,6 +14,7 @@ export type AuthSession = Session & {
     username: string;
     isAuthenticated: boolean;
     isHome: boolean;
+    googleCalendarAccessToken?: string;
 };
 
 export type AuthRequest = Request & {

@@ -106,6 +106,27 @@
         </div>
         <div class='widget' id="calendar-widget">
             <h2 class="heading">Calendar</h2>
+            <div class="content">
+                <% if (!googleCalendarAccessToken) { %>
+                    <form action="/google" method="POST" class="google-auth">
+                        <button type="submit">Authenticate with Google</button>
+                    </form>
+                <% } else { %>
+                    <div class="events">
+                        <% events.forEach(function (event) { %>
+                            <div class="event"
+                            <% if(event.color) { %>
+                                style="<%= `background-color:${event.color};` %>"
+                            <% } %>>
+                                <h3><%= event.summary %></h3>
+                                <% if (event.start.dateTime && event.end.dateTime) { %>
+                                    <p><%= event.start.dateTime %> - <%= event.end.dateTime %></p>
+                                <% } %>
+                            </div>
+                        <% }); %>
+                    </div>
+                <% } %>    
+            </div>
         </div>
         <div class='widget' id="apod-widget">
             <h2 class="heading" id="apod-heading">Astronomy Picture of the Day</h2>

@@ -1,6 +1,6 @@
 import express, { NextFunction, Response } from 'express';
 import { dashboardController } from '../controller/dashboard';
-import { googleAuthController } from '../controller/google-auth';
+import { getAuthUrl, redirectFromGoogle } from '../controller/google-auth';
 import todoModel from '../models/todoModel';
 import { AuthRequest, castPromiseToVoid } from '../utils/utils';
 
@@ -38,7 +38,17 @@ router.patch('/todos/:id/postpone', ((
     res.status(200).send();
 }) as express.RequestHandler);
 
-router.get('/google-auth', castPromiseToVoid(googleAuthController));
+router.get(
+    '/google-auth',
+    castPromiseToVoid(redirectFromGoogle) as express.RequestHandler
+);
+
+router.post(
+    '/google',
+    castPromiseToVoid(async (_req, res: Response, _next) => {
+        res.redirect(getAuthUrl());
+    })
+);
 
 router.get('/not-found', (_req, res) => {
     res.status(404).render('not-found', {

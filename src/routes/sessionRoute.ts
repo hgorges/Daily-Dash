@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction, Response } from 'express';
 import {
     checkAuthentication,
     loginUser,
@@ -13,9 +13,16 @@ sessionRouter.use((req, _res, next) => {
     next();
 });
 
-sessionRouter.get('/login', (_req, res) => {
+sessionRouter.get('/login', ((
+    req: AuthRequest,
+    res: Response,
+    _next: NextFunction
+) => {
+    if (req.session.isAuthenticated) {
+        res.redirect('/');
+    }
     res.render('login');
-});
+}) as express.RequestHandler);
 
 sessionRouter.post('/login', (req, res) => {
     loginUser(req as AuthRequest, res);

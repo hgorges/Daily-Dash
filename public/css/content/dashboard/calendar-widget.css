@@ -1,0 +1,73 @@
+#calendar-widget > .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.google-auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.google-auth button {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    letter-spacing: 0.05em;
+    transition: background-color 0.3s ease;
+}
+
+.google-auth button:hover {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+}
+
+.events {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: flex-start;
+    gap: 5px;
+}
+
+.event {
+    border-radius: 4px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--secondary-color);
+    color: var(--primary-color);
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    margin-bottom: 10px;
+}
+
+.event:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+.event h3 {
+    color: var(--primary-color);
+    font-size: 1em;
+    font-weight: bold;
+    margin-right: 20px;
+    flex: 1;
+}
+
+.event p {
+    font: 1.1em sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+}

@@ -81,7 +81,7 @@
 #completed-zone.drag-over,
 #postponed-zone.drag-over {
     background-color: var(--primary-color);
-    color: var(--accent-color);
+    color: var(--background-color);
     font-weight: bold;
 }
 

@@ -1,75 +1,169 @@
-import fs from "fs";
-import path from "path";
-import process from "process";
-import { authenticate } from "@google-cloud/local-auth";
-import { google } from "googleapis";
-import { OAuth2Client } from "google-auth-library";
-import { calendar_v3 } from "@googleapis/calendar";
+import { calendar_v3 } from '@googleapis/calendar';
+import axios from 'axios';
+import { formatRFC3339 } from 'date-fns';
+import { OAuth2Client } from 'google-auth-library';
+import { google } from 'googleapis';
+import { db } from '../server';
+import { AuthRequest } from '../utils/utils';
 
-const SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"];
-const TOKEN_PATH = path.join(process.cwd(), "token.json");
-const CREDENTIALS_PATH = path.join(process.cwd(), "credentials.json");
+const calendarModel = {
+    async getCalendars(
+        req: AuthRequest
+    ): Promise<calendar_v3.Schema$CalendarListEntry[] | null> {
+        const { username, googleCalendarAccessToken: access_token } =
+            req.session;
 
-export async function loadSavedCredentialsIfExist() {
-    try {
-        const content = fs.readFileSync(TOKEN_PATH, { encoding: "utf-8" });
-        const credentials = JSON.parse(content);
-        return google.auth.fromJSON(credentials);
-    } catch (err) {
-        console.log(process.cwd());
-        return null;
-    }
-}
+        if (access_token == null) {
+            return null;
+        }
 
-async function saveCredentials(client: OAuth2Client) {
-    const content = fs.readFileSync(CREDENTIALS_PATH, { encoding: "utf-8" });
-    const keys = JSON.parse(content);
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    const key = keys.installed || keys.web;
-    const payload = JSON.stringify({
-        type: "authorized_user",
-        client_id: key.client_id,
-        client_secret: key.client_secret,
-        refresh_token: client.credentials.refresh_token,
-    });
-    fs.writeFileSync(TOKEN_PATH, payload);
-}
+        const calendarListResponse = await axios.get(
+            'https://www.googleapis.com/calendar/v3/users/me/calendarList/',
+            {
+                headers: {
+                    Authorization: `Bearer ${access_token}`,
+                },
+            }
+        );
+        const availableCalendars: calendar_v3.Schema$CalendarListEntry[] =
+            calendarListResponse.data.items;
 
-export async function authorize() {
-    // const client = await loadSavedCredentialsIfExist();
-    // if (client != null) {
-    //     return client;
-    // }
-    const oAuth2Client = await authenticate({
-        scopes: SCOPES,
-        keyfilePath: TOKEN_PATH,
-    });
-    if (oAuth2Client.credentials != null) {
-        await saveCredentials(oAuth2Client);
-    }
-    return oAuth2Client;
-}
+        const { calendars }: { calendars: string[] } = await db('users')
+            .select('calendars')
+            .where({ username })
+            .first();
 
-export async function listEvents(auth: OAuth2Client) {
-    if (auth == null) {
-        return "No connection";
-    }
-    const calendar = new calendar_v3.Calendar({ auth });
-    const res = await calendar.events.list({
-        calendarId: "primary",
-        timeMin: new Date().toISOString(),
-        maxResults: 10,
-        singleEvents: true,
-        orderBy: "startTime",
-    });
-    const events = res.data.items;
-    if (!events || events.length === 0) {
-        console.log("No upcoming events found.");
-        return;
-    }
-    console.log("Upcoming 10 events:");
-    events.map((event: calendar_v3.Schema$Event) => {
-        const start = event?.start?.dateTime ?? event?.start?.date;
-        console.log(`${start} - ${event.summary}`);
-    });
-}
+        return availableCalendars.filter(
+            (calendar) =>
+                calendar.summary != null && calendars.includes(calendar.summary)
+        );
+    },
+
+    async getCalendarEvents(
+        req: AuthRequest
+    ): Promise<calendar_v3.Schema$Event[]> {
+        const { googleCalendarAccessToken: access_token } = req.session;
+
+        if (access_token == null) {
+            return [];
+        }
+
+        let calendars;
+        try {
+            calendars = await calendarModel.getCalendars(req);
+        } catch {
+            req.session.googleCalendarAccessToken = undefined;
+            return [];
+        }
+
+        if (calendars == null) {
+            return [];
+        }
+
+        const oAuth2 = new google.auth.OAuth2();
+        oAuth2.setCredentials({ access_token });
+
+        const events: calendar_v3.Schema$Event[] = [];
+        for (const calendar of calendars) {
+            const calendarEvents = await calendarModel.listEvents(
+                oAuth2 as any,
+                (calendar as any).id
+            );
+
+            events.push(
+                ...calendarEvents.map((calendarEvent) => ({
+                    ...calendarEvent,
+                    color: calendar.backgroundColor,
+                }))
+            );
+        }
+
+        events.sort(this.sortEventsByStartTime);
+
+        return this.convertEventTimeToUserTimezone(
+            req.session.username,
+            events
+        );
+    },
+
+    sortEventsByStartTime(
+        eventA: calendar_v3.Schema$Event,
+        eventB: calendar_v3.Schema$Event
+    ): number {
+        if (eventA.start?.dateTime == null) {
+            return Number.MIN_SAFE_INTEGER;
+        }
+
+        if (eventB.start?.dateTime == null) {
+            return Number.MAX_SAFE_INTEGER;
+        }
+
+        return (
+            new Date(eventA.start.dateTime).getTime() -
+            new Date(eventB.start.dateTime).getTime()
+        );
+    },
+
+    async convertEventTimeToUserTimezone(
+        username: string,
+        events: calendar_v3.Schema$Event[]
+    ): Promise<calendar_v3.Schema$Event[]> {
+        const { locale, time_zone } = await db('users')
+            .select(['locale', 'time_zone'])
+            .where({ username })
+            .first();
+
+        for (const event of events) {
+            if (event.start?.dateTime == null || event.end?.dateTime == null) {
+                continue;
+            }
+
+            event.start.dateTime = new Date(event.start?.dateTime)
+                .toLocaleTimeString(locale, {
+                    timeZone: time_zone,
+                    timeStyle: 'short',
+                })
+                .replace(',', '');
+            event.end.dateTime = new Date(
+                event.end?.dateTime
+            ).toLocaleTimeString(locale, {
+                timeZone: time_zone,
+                timeStyle: 'short',
+            });
+        }
+
+        return events;
+    },
+
+    async listEvents(
+        auth: OAuth2Client,
+        calendarId: string
+    ): Promise<calendar_v3.Schema$Event[]> {
+        const calendar = new calendar_v3.Calendar({ auth });
+
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+
+        const endOfDay = new Date();
+        endOfDay.setHours(23, 59, 59, 999);
+
+        const res = await calendar.events.list(
+            {
+                calendarId: calendarId,
+                timeMin: formatRFC3339(startOfDay),
+                timeMax: formatRFC3339(endOfDay),
+                timeZone: 'UTC',
+                singleEvents: true,
+                orderBy: 'startTime',
+            },
+            { apiVersion: 'v3' }
+        );
+        if (!res.data.items || res.data.items.length === 0) {
+            return [];
+        }
+
+        return res.data.items;
+    },
+};
+
+export default calendarModel;

@@ -14,6 +14,9 @@ export async function up(knex: Knex): Promise<void> {
         table.string('password', 255).notNullable();
         table.point('home_gps').nullable();
         table.point('work_gps').nullable();
+        table.specificType('calendars', 'TEXT[]').nullable();
+        table.text('locale').defaultTo('en-US').nullable();
+        table.text('time_zone').defaultTo('Etc/Zulu').nullable();
         table.dateTime('created_at').defaultTo('now()').notNullable();
         table.string('created_by', 30).defaultTo('system').notNullable();
         table.dateTime('updated_at').defaultTo('now()').notNullable();
