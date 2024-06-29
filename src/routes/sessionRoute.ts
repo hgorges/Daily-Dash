@@ -20,12 +20,13 @@ sessionRouter.get('/login', ((
 ) => {
     if (req.session.isAuthenticated) {
         res.redirect('/');
+        return;
     }
     res.render('login');
 }) as express.RequestHandler);
 
-sessionRouter.post('/login', (req, res) => {
-    loginUser(req as AuthRequest, res);
+sessionRouter.post('/login', async (req, res) => {
+    await loginUser(req as AuthRequest, res);
 });
 
 sessionRouter.get(

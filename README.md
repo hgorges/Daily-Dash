@@ -18,6 +18,12 @@ git clone https://github.com/hgorges/DailyDash.git
 cd DailyDash
 ```
 
+### Install the dependencies
+
+```bash
+npm install
+```
+
 ### Start the server
 
 ```bash
