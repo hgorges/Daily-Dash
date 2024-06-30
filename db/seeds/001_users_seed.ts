@@ -10,7 +10,7 @@ export async function seed(knex: Knex): Promise<void> {
             email: 'system@cryptospace.dev',
             password: await bcrypt.hash(
                 Math.random().toString(36).slice(-8),
-                10
+                10,
             ),
             created_at: knex.raw('now()'),
             created_by: 'system',
@@ -24,7 +24,7 @@ export async function seed(knex: Knex): Promise<void> {
             email: 'test@cryptospace.dev',
             password: await bcrypt.hash(
                 Math.random().toString(36).slice(-8),
-                10
+                10,
             ),
             created_at: knex.raw('now()'),
             created_by: 'system',

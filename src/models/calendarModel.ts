@@ -35,7 +35,8 @@ const calendarModel = {
 
         return availableCalendars.filter(
             (calendar) =>
-                calendar.summary != null && calendars.includes(calendar.summary),
+                calendar.summary != null &&
+                calendars.includes(calendar.summary),
         );
     },
 

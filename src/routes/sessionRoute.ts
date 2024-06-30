@@ -1,5 +1,9 @@
 import express, { NextFunction, Response } from 'express';
-import { checkAuthentication, loginUser, logoutUser } from '../middleware/authMiddleware';
+import {
+    checkAuthentication,
+    loginUser,
+    logoutUser,
+} from '../middleware/authMiddleware';
 import { AuthRequest, castPromiseToVoid } from '../utils/utils';
 
 const sessionRouter = express.Router();
