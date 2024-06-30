@@ -4,24 +4,24 @@ services:
   server:
     image: daily-dash
     restart: always
-    # Run seeding in server console:
-    #   npm run seed
-    command: sh -c "npm run migrate && npm start"
     build:
       context: .
       dockerfile: Dockerfile
+    pull_policy: never
+    command: sh -c "npm run migrate && npm start"
     ports:
       - ${PORT}:${PORT}
+      - ${DEBUG_PORT}:${DEBUG_PORT}
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+      - ./views:/app/views
+    env_file: ./secrets/.env
     depends_on:
       db:
         condition: service_healthy
       cache:
         condition: service_healthy
-    volumes:
-      - ./src:/usr/src/app/src
-      - ./public:/usr/src/app/public
-      - ./views:/usr/src/app/views
-    env_file: ./secrets/.env
 
   db:
     image: postgres:latest
@@ -32,11 +32,8 @@ services:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-    # Open port for testing purposes
     ports:
       - ${DB_PORT}:${DB_PORT}
-    expose:
-      - ${DB_PORT}
     healthcheck:
       test: ['CMD', 'pg_isready', '-U', '$DB_USERNAME']
       interval: 10s
@@ -47,7 +44,6 @@ services:
   cache:
     image: redis:latest
     restart: always
-    # Open port for testing purposes
     ports:
       - ${REDIS_PORT}:${REDIS_PORT}
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
