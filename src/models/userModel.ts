@@ -52,7 +52,7 @@ const userModel = {
 
     async getUserForLogin(
         username: string,
-        password: string
+        password: string,
     ): Promise<User | null> {
         const user = await db<User>('users')
             .where({ username: username.toLocaleLowerCase() })

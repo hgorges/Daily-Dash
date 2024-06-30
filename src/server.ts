@@ -1,7 +1,5 @@
 import dotenv from 'dotenv';
 import https from 'https';
-dotenv.config({ path: '../secrets/.env' });
-
 import bodyParser from 'body-parser';
 import RedisStore from 'connect-redis';
 import cors from 'cors';
@@ -15,6 +13,8 @@ import favicon from 'serve-favicon';
 import knexConfig from '../db/knexfile';
 import sessionRouter from './routes/sessionRoute';
 import userRoutes from './routes/userRoutes';
+
+dotenv.config({ path: '../secrets/.env' });
 
 export const db = Knex(knexConfig);
 
@@ -48,7 +48,7 @@ app.use(
             secure: true,
             maxAge: 24 * 60 * 60 * 1000,
         },
-    })
+    }),
 );
 
 app.use(cors(), sessionRouter);
@@ -57,11 +57,11 @@ app.use(userRoutes);
 
 const privateKey = fs.readFileSync(
     path.join(__dirname, '..', 'secrets', 'cryptospace.key'),
-    'utf8'
+    'utf8',
 );
 const certificate = fs.readFileSync(
     path.join(__dirname, '..', 'secrets', 'cryptospace.crt'),
-    'utf8'
+    'utf8',
 );
 
 const credentials = { key: privateKey, cert: certificate };

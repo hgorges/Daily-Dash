@@ -11,7 +11,7 @@ type NewsData = {
 const apodModel = {
     async getNewsData(): Promise<NewsData> {
         const newsRssFeed = await new Parser().parseURL(
-            'https://www.tagesschau.de/index~rss2.xml'
+            'https://www.tagesschau.de/index~rss2.xml',
         );
 
         return {

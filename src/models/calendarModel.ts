@@ -8,7 +8,7 @@ import { AuthRequest } from '../utils/utils';
 
 const calendarModel = {
     async getCalendars(
-        req: AuthRequest
+        req: AuthRequest,
     ): Promise<calendar_v3.Schema$CalendarListEntry[] | null> {
         const { username, googleCalendarAccessToken: access_token } =
             req.session;
@@ -23,7 +23,7 @@ const calendarModel = {
                 headers: {
                     Authorization: `Bearer ${access_token}`,
                 },
-            }
+            },
         );
         const availableCalendars: calendar_v3.Schema$CalendarListEntry[] =
             calendarListResponse.data.items;
@@ -35,12 +35,12 @@ const calendarModel = {
 
         return availableCalendars.filter(
             (calendar) =>
-                calendar.summary != null && calendars.includes(calendar.summary)
+                calendar.summary != null && calendars.includes(calendar.summary),
         );
     },
 
     async getCalendarEvents(
-        req: AuthRequest
+        req: AuthRequest,
     ): Promise<calendar_v3.Schema$Event[]> {
         const { googleCalendarAccessToken: access_token } = req.session;
 
@@ -67,14 +67,14 @@ const calendarModel = {
         for (const calendar of calendars) {
             const calendarEvents = await calendarModel.listEvents(
                 oAuth2 as any,
-                (calendar as any).id
+                (calendar as any).id,
             );
 
             events.push(
                 ...calendarEvents.map((calendarEvent) => ({
                     ...calendarEvent,
                     color: calendar.backgroundColor,
-                }))
+                })),
             );
         }
 
@@ -82,13 +82,13 @@ const calendarModel = {
 
         return this.convertEventTimeToUserTimezone(
             req.session.username,
-            events
+            events,
         );
     },
 
     sortEventsByStartTime(
         eventA: calendar_v3.Schema$Event,
-        eventB: calendar_v3.Schema$Event
+        eventB: calendar_v3.Schema$Event,
     ): number {
         if (eventA.start?.dateTime == null) {
             return Number.MIN_SAFE_INTEGER;
@@ -106,7 +106,7 @@ const calendarModel = {
 
     async convertEventTimeToUserTimezone(
         username: string,
-        events: calendar_v3.Schema$Event[]
+        events: calendar_v3.Schema$Event[],
     ): Promise<calendar_v3.Schema$Event[]> {
         const { locale, time_zone } = await db('users')
             .select(['locale', 'time_zone'])
@@ -125,7 +125,7 @@ const calendarModel = {
                 })
                 .replace(',', '');
             event.end.dateTime = new Date(
-                event.end?.dateTime
+                event.end?.dateTime,
             ).toLocaleTimeString(locale, {
                 timeZone: time_zone,
                 timeStyle: 'short',
@@ -137,7 +137,7 @@ const calendarModel = {
 
     async listEvents(
         auth: OAuth2Client,
-        calendarId: string
+        calendarId: string,
     ): Promise<calendar_v3.Schema$Event[]> {
         const calendar = new calendar_v3.Calendar({ auth });
 
@@ -156,7 +156,7 @@ const calendarModel = {
                 singleEvents: true,
                 orderBy: 'startTime',
             },
-            { apiVersion: 'v3' }
+            { apiVersion: 'v3' },
         );
         if (!res.data.items || res.data.items.length === 0) {
             return [];

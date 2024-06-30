@@ -8,13 +8,13 @@ const router = express.Router();
 
 router.get(
     '/',
-    castPromiseToVoid(dashboardController) as express.RequestHandler
+    castPromiseToVoid(dashboardController) as express.RequestHandler,
 );
 
 router.post('/switch-location', ((
     req: AuthRequest,
     res: Response,
-    _next: NextFunction
+    _next: NextFunction,
 ) => {
     req.session.isHome = !req.session.isHome;
     res.status(200).send();
@@ -23,7 +23,7 @@ router.post('/switch-location', ((
 router.patch('/todos/:id/complete', ((
     req: AuthRequest,
     res: Response,
-    _next: NextFunction
+    _next: NextFunction,
 ) => {
     todoModel.completeTodo(req.session.username, req.params.id);
     res.status(200).send();
@@ -32,7 +32,7 @@ router.patch('/todos/:id/complete', ((
 router.patch('/todos/:id/postpone', ((
     req: AuthRequest,
     res: Response,
-    _next: NextFunction
+    _next: NextFunction,
 ) => {
     todoModel.postponeTodo(req.session.username, req.params.id);
     res.status(200).send();
@@ -40,14 +40,14 @@ router.patch('/todos/:id/postpone', ((
 
 router.get(
     '/google-auth',
-    castPromiseToVoid(redirectFromGoogle) as express.RequestHandler
+    castPromiseToVoid(redirectFromGoogle) as express.RequestHandler,
 );
 
 router.post(
     '/google',
     castPromiseToVoid(async (_req, res: Response, _next) => {
         res.redirect(getAuthUrl());
-    })
+    }),
 );
 
 router.get('/not-found', (_req, res) => {

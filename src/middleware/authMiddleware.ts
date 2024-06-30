@@ -4,7 +4,7 @@ import { AuthRequest } from '../utils/utils';
 
 export async function loginUser(
     req: AuthRequest,
-    res: Response
+    res: Response,
 ): Promise<void> {
     const { username, password } = req.body;
 
@@ -29,7 +29,7 @@ export async function loginUser(
 export async function logoutUser(
     req: AuthRequest,
     res: Response,
-    _next: NextFunction
+    _next: NextFunction,
 ): Promise<void> {
     req.session.destroy(() => {
         res.clearCookie('connect.sid');
@@ -40,7 +40,7 @@ export async function logoutUser(
 export async function checkAuthentication(
     req: AuthRequest,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
 ): Promise<void> {
     if (req.session.isAuthenticated) {
         req.user = await userModel.getUserByUsername(req.session.username);

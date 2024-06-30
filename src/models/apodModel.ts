@@ -12,7 +12,7 @@ const apodModel = {
 
         try {
             const apodRssFeed = await new Parser().parseURL(
-                'https://apod.com/feed.rss'
+                'https://apod.com/feed.rss',
             );
 
             const imageUrlRegex = /<img.*?src=["'](.*?)["']/;
@@ -21,7 +21,7 @@ const apodModel = {
                 apodLink: apodRssFeed.items[0].link!,
                 apodImageLink:
                     apodRssFeed.items[0]['content:encoded'].match(
-                        imageUrlRegex
+                        imageUrlRegex,
                     )[1],
                 apodTitle: apodRssFeed.items[0].title!,
             };

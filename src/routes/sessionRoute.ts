@@ -1,9 +1,5 @@
 import express, { NextFunction, Response } from 'express';
-import {
-    checkAuthentication,
-    loginUser,
-    logoutUser,
-} from '../middleware/authMiddleware';
+import { checkAuthentication, loginUser, logoutUser } from '../middleware/authMiddleware';
 import { AuthRequest, castPromiseToVoid } from '../utils/utils';
 
 const sessionRouter = express.Router();
@@ -16,7 +12,7 @@ sessionRouter.use((req, _res, next) => {
 sessionRouter.get('/login', ((
     req: AuthRequest,
     res: Response,
-    _next: NextFunction
+    _next: NextFunction,
 ) => {
     if (req.session.isAuthenticated) {
         res.redirect('/');
@@ -31,11 +27,11 @@ sessionRouter.post('/login', async (req, res) => {
 
 sessionRouter.get(
     '/logout',
-    castPromiseToVoid(logoutUser) as express.RequestHandler
+    castPromiseToVoid(logoutUser) as express.RequestHandler,
 );
 
 sessionRouter.use(
-    castPromiseToVoid(checkAuthentication) as express.RequestHandler
+    castPromiseToVoid(checkAuthentication) as express.RequestHandler,
 );
 
 export default sessionRouter;

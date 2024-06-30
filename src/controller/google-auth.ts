@@ -11,7 +11,7 @@ const OAuth2SecretsPath = path.join(
     '..',
     '..',
     'secrets',
-    'googleOAuth2.json'
+    'googleOAuth2.json',
 );
 
 export function getAuthUrl(): string {
@@ -32,7 +32,7 @@ export function getAuthUrl(): string {
 export const redirectFromGoogle = async (
     req: AuthRequest,
     res: Response,
-    _next: NextFunction
+    _next: NextFunction,
 ) => {
     const code = req.query.code;
 
@@ -55,7 +55,7 @@ async function getToken(req: AuthRequest, authorizationCode: string) {
                 client_secret: clientSecret,
                 redirect_uri: redirectUri,
                 grant_type: 'authorization_code',
-            }
+            },
         );
         const { access_token } = accessTokenResponse.data;
         req.session.googleCalendarAccessToken = access_token;
