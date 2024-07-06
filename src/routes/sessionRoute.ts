@@ -1,6 +1,7 @@
 import express, { NextFunction, Response } from 'express';
 import {
     checkAuthentication,
+    createUser,
     loginUser,
     logoutUser,
 } from '../middleware/authMiddleware';
@@ -27,6 +28,22 @@ sessionRouter.get('/login', ((
 
 sessionRouter.post('/login', async (req, res) => {
     await loginUser(req as AuthRequest, res);
+});
+
+sessionRouter.get('/signup', ((
+    req: AuthRequest,
+    res: Response,
+    _next: NextFunction,
+) => {
+    if (req.session.isAuthenticated) {
+        res.redirect('/');
+        return;
+    }
+    res.render('signup');
+}) as express.RequestHandler);
+
+sessionRouter.post('/signup', async (req, res) => {
+    await createUser(req as AuthRequest, res);
 });
 
 sessionRouter.get(

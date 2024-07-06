@@ -15,10 +15,10 @@ export const dashboardController = async (
     res.status(200).render('dashboard', {
         path: '/',
         ...(await newsModel.getNewsData()),
-        ...(await weatherModel.getWeatherData(
+        weatherData: await weatherModel.getWeatherData(
             req.session.username,
             req.session.isHome,
-        )),
+        ),
         isHome: req.session.isHome,
         trafficData: await trafficModel.getTrafficData(
             req.session.isHome,

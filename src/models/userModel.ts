@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import knex from 'knex';
 import { db } from '../server';
 
 export type User = {
@@ -18,29 +17,97 @@ export type User = {
 };
 
 const userModel = {
-    async createUser(user: User, password: string): Promise<string> {
+    async createUser(
+        username: string,
+        first_name: string,
+        last_name: string,
+        email: string,
+        password: string,
+        createdBy: string | null,
+    ): Promise<string> {
         const salt = await bcrypt.genSalt();
 
-        const persistedData = await knex('users')
+        const persistedData = await db('users')
             .insert({
-                username: user.username.toLocaleLowerCase(),
+                username: username,
+                first_name: first_name,
+                last_name: last_name,
+                email: email,
                 password: await this.hashPassword(password, salt),
-                first_name: user.first_name,
-                last_name: user.last_name,
-                email: user.email,
-                home_gps: {
-                    x: user.home_gps.x,
-                    y: user.home_gps.y,
-                },
-                work_gps: {
-                    x: user.work_gps.x,
-                    y: user.work_gps.y,
-                },
+                home_gps: null,
+                work_gps: null,
                 created_at: new Date(),
-                created_by: 'system',
+                created_by: createdBy ?? 'system',
                 updated_at: new Date(),
-                updated_by: 'system',
+                updated_by: createdBy ?? 'system',
             })
+            .returning('user_id');
+
+        return persistedData[0];
+    },
+
+    async updateUser(
+        username: string,
+        username_changed: string,
+        first_name: string,
+        last_name: string,
+        password: string | null,
+        changed_password: string | null,
+    ): Promise<string | null> {
+        if (
+            password != null &&
+            password.length > 7 &&
+            password === changed_password
+        ) {
+            const salt = await bcrypt.genSalt();
+
+            const persistedData = await db('users')
+                .update({
+                    password: await this.hashPassword(password, salt),
+                    updated_at: new Date(),
+                    updated_by: username,
+                })
+                .where({ username })
+                .returning('user_id');
+
+            return persistedData[0];
+        }
+
+        const persistedData = await db('users')
+            .update({
+                username: username_changed,
+                first_name,
+                last_name,
+                updated_at: new Date(),
+                updated_by: username,
+            })
+            .where({ username })
+            .returning('user_id');
+
+        return persistedData[0];
+    },
+
+    async updateUserData(
+        username: string,
+        email: string,
+        home_gps: { x: number; y: number },
+        work_gps: { x: number; y: number },
+        calendars: string,
+        locale: string,
+        time_zone: string,
+    ): Promise<string> {
+        const persistedData = await db('users')
+            .update({
+                email,
+                home_gps: '(' + home_gps.x + ',' + home_gps.y + ')',
+                work_gps: '(' + work_gps.x + ',' + work_gps.y + ')',
+                calendars: '{' + calendars + '}',
+                locale,
+                time_zone,
+                updated_at: new Date(),
+                updated_by: username,
+            })
+            .where({ username })
             .returning('user_id');
 
         return persistedData[0];
@@ -66,15 +133,17 @@ const userModel = {
     },
 
     async getUserById(user_id: string): Promise<User | undefined> {
-        const result = await db<User>('users').where({ user_id }).first();
-        return result;
+        return db<User>('users').where({ user_id }).first();
+    },
+
+    async getUserByEmail(email: string): Promise<User | undefined> {
+        return db<User>('users').where({ email }).first();
     },
 
     async getUserByUsername(username: string): Promise<User | undefined> {
-        const result = await db<User>('users')
+        return db<User>('users')
             .where({ username: username.toLocaleLowerCase() })
             .first();
-        return result;
     },
 };
 

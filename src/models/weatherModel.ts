@@ -40,12 +40,16 @@ const weatherModel = {
     async getWeatherData(
         username: string,
         isHome: boolean,
-    ): Promise<WeatherData> {
+    ): Promise<WeatherData | null> {
         const { api_key } = await this.getWeatherApiKey();
         assert(api_key, 'Weather API key not found');
 
         const user = await userModel.getUserByUsername(username);
         assert(user, 'User not found');
+
+        if (user.home_gps === null || user.work_gps === null) {
+            return null;
+        }
 
         const gps = isHome ? user.home_gps : user.work_gps;
 

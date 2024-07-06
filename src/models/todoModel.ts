@@ -8,17 +8,24 @@ const todoModel = {
     },
 
     async getApiKey(username: string): Promise<string | undefined> {
-        const { api_key } = await db('api_keys')
+        const result = await db('api_keys')
             .join('users', 'api_keys.fk_user_id', '=', 'users.user_id')
             .where({ username })
             .first();
 
-        return api_key;
+        if (result != null) {
+            const { api_key } = result;
+            return api_key;
+        } else {
+            return undefined;
+        }
     },
 
-    async getDueTodosForToday(username: string): Promise<Task[]> {
+    async getDueTodosForToday(username: string): Promise<Task[] | null> {
         const api_key = await this.getApiKey(username);
-        assert(api_key, 'Todoist api_key not found');
+        if (api_key === undefined) {
+            return null;
+        }
 
         return this.getTodoistApi(api_key).getTasks({
             filter: 'overdue | today',

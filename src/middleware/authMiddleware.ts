@@ -26,6 +26,39 @@ export async function loginUser(
     res.redirect('/');
 }
 
+export async function createUser(
+    req: AuthRequest,
+    res: Response,
+): Promise<void> {
+    const {
+        username,
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        password,
+        confirm_password,
+    } = req.body;
+
+    if (
+        (await userModel.getUserByUsername(username)) ||
+        (await userModel.getUserByEmail(email)) ||
+        password !== confirm_password
+    ) {
+        res.redirect('/login');
+        return;
+    }
+
+    await userModel.createUser(
+        username,
+        firstName,
+        lastName,
+        email,
+        password,
+        username,
+    );
+    res.redirect('/login');
+}
+
 export async function logoutUser(
     req: AuthRequest,
     res: Response,

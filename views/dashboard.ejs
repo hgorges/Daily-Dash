@@ -9,86 +9,108 @@
 </head>
 
 <body>
-    <%- include('includes/navigation.ejs') %>
+<%- include('includes/navigation.ejs') %>
 
-    <div id="widgets">
-        <div class='widget' id="news-widget">
-            <h2 class="heading">News</h2>
-            <div class="content">
-                <% newsEntries.forEach(entry => { %>
-                    <a class="news-links" href="<%= entry.link %>">
-                        <div class="news-entry">
-                            <h3><%= entry.headline %></h3>
-                        </div>
-                    </a>
-                <% }); %>
-            </div>
+<div id="widgets">
+    <div class='widget' id="news-widget">
+        <h2 class="heading">News</h2>
+        <div class="content">
+            <% newsEntries.forEach(entry => { %>
+                <a class="news-links" href="<%= entry.link; %>">
+                    <div class="news-entry">
+                        <h3><%= entry.headline; %></h3>
+                    </div>
+                </a>
+            <% }); %>
         </div>
-        <div class='widget' id="weather-widget">
-            <h2 class="heading">Weather</h2>
-            <div class="content">
+    </div>
+    <div class='widget' id="weather-widget">
+        <h2 class="heading">Weather</h2>
+        <div class="content">
+            <% if(weatherData) { %>
                 <div class="weather-descriptions">
-                    <% weather.forEach(w => { %>
-                        <span class="weather-description"><%= w.description %> <img src="<%= w.iconUrl %>" alt="<%= w.description %>"></span>
+                    <% weatherData.weather.forEach(w => { %>
+                        <span class="weather-description"><%= w.description; %> <img src="<%= w.iconUrl; %>"
+                                                                                     alt="<%= w.description; %>"></span>
                     <% }); %>
                 </div>
                 <div id="temperature-range">
-                    <p class="temperature-label"><%= summary %> in <%= place %>.</p>
-                    <p class="temperature-label"><%= temp.min %>°C to <%= temp.max %>°C</p>
+                    <p class="temperature-label"><%= weatherData.summary %> in <%= weatherData.place %>.</p>
+                    <p class="temperature-label"><%= weatherData.temp.min; %>°C to <%= weatherData.temp.max; %>°C</p>
                 </div>
                 <div class="temperature-row">
-                    <div class="temperature-column<%= temp.morn <= 0 ? ' cold-weather' : temp.morn >= 30 ? ' warm-weather' : '' %>">
+                    <div class="temperature-column<%= weatherData.temp.morn <= 0 ? ' cold-weather' : weatherData.temp.morn >= 30 ? ' warm-weather' : ''; %>">
                         <p>Morning</p>
-                        <p><%= temp.morn %>°C</p>
+                        <p><%= weatherData.temp.morn; %>°C</p>
                     </div>
-                    <div class="temperature-column<%= temp.day <= 0 ? ' cold-weather' : temp.day >= 30 ? ' warm-weather' : '' %>">
+                    <div class="temperature-column<%= weatherData.temp.day <= 0 ? ' cold-weather' : weatherData.temp.day >= 30 ? ' warm-weather' : ''; %>">
                         <p>Day</p>
-                        <p><%= temp.day %>°C</p>
+                        <p><%= weatherData.temp.day; %>°C</p>
                     </div>
-                    <div class="temperature-column<%= temp.eve <= 0 ? ' cold-weather' : temp.eve >= 30 ? ' warm-weather' : '' %>">
+                    <div class="temperature-column<%= weatherData.temp.eve <= 0 ? ' cold-weather' : weatherData.temp.eve >= 30 ? ' warm-weather' : ''; %>">
                         <p>Evening</p>
-                        <p><%= temp.eve %>°C</p>
+                        <p><%= weatherData.temp.eve; %>°C</p>
                     </div>
-                    <div class="temperature-column<%= temp.night <= 0 ? ' cold-weather' : temp.night >= 30 ? ' warm-weather' : '' %>">
+                    <div class="temperature-column<%= weatherData.temp.night <= 0 ? ' cold-weather' : weatherData.temp.night >= 30 ? ' warm-weather' : ''; %>">
                         <p>Night</p>
-                        <p><%= temp.night %>°C</p>
+                        <p><%= weatherData.temp.night; %>°C</p>
                     </div>
                 </div>
                 <div class="weather-info-row">
-                    <p class="weather-info-column"><span class="weather-info-icon"><i class="fas fa-tint"></i></span> Humidity: <%= humidity %>%</p>
-                    <p class="weather-info-column"><span class="weather-info-icon <%= uvi_color %>"><i class="fas fa-sun"></i></span> UV Index: <%= uvi %></p>
-                    <p class="weather-info-column"><span class="weather-info-icon"><i class="fas fa-cloud"></i></span> Cloud cover: <%= clouds %>%</p>
-                    <p class="weather-info-column"><span class="weather-info-icon <%= wind_speed_color %>"><i class="fas fa-wind"></i></span> Wind speed: <%= wind_speed %> km/h</p>
+                    <p class="weather-info-column"><span class="weather-info-icon"><i class="fas fa-tint"></i></span>
+                        Humidity: <%= weatherData.humidity; %>%</p>
+                    <p class="weather-info-column"><span class="weather-info-icon <%= weatherData.uvi_color; %>"><i
+                                    class="fas fa-sun"></i></span> UV Index: <%= weatherData.uvi; %></p>
+                    <p class="weather-info-column"><span class="weather-info-icon"><i class="fas fa-cloud"></i></span>
+                        Cloud cover: <%= weatherData.clouds; %>%</p>
+                    <p class="weather-info-column"><span class="weather-info-icon <%= weatherData.wind_speed_color; %>"><i
+                                    class="fas fa-wind"></i></span> Wind speed: <%= weatherData.wind_speed; %> km/h</p>
                 </div>
-            </div>
+            <% } else { %>
+                <div class="no-data">
+                    <p class="no-data-label">No user coordinates set!</p>
+                </div>
+            <% } %>
         </div>
-        <div class='widget' id="traffic-widget">
-            <h2 class="heading">Traffic</h2>
-            <div class="content">
+    </div>
+    <div class='widget' id="traffic-widget">
+        <h2 class="heading">Traffic</h2>
+        <div class="content">
+            <% if(trafficData) { %>
                 <div class="route-info-container">
-                    <p class="route-info"><i class="<%= isHome ? 'fas fa-home' : 'fas fa-briefcase' %> route-info-icon"></i><%= trafficData.from %></p>
-                    <p class="route-info"><i class="<%= !isHome ? 'fas fa-home' : 'fas fa-briefcase' %> route-info-icon"></i><%= trafficData.to %></p>
+                    <p class="route-info"><i
+                                class="<%= isHome ? 'fas fa-home' : 'fas fa-briefcase'; %> route-info-icon"></i><%= trafficData.from; %>
+                    </p>
+                    <p class="route-info"><i
+                                class="<%= !isHome ? 'fas fa-home' : 'fas fa-briefcase'; %> route-info-icon"></i><%= trafficData.to; %>
+                    </p>
                 </div>
                 <div class="routes">
                     <ul>
                         <% trafficData.routes.forEach(function(route) { %>
                             <li>
-                                <p><strong>Route:</strong> <%= route.summary %></p>
-                                <p><strong>Distance:</strong> <%= (route.distance / 1000).toFixed(1) %> km</p>
-                                <p><strong>Duration:</strong> <%= Math.floor(route.duration / 60) %> min</p>
+                                <p><strong>Route:</strong> <%= route.summary; %></p>
+                                <p><strong>Distance:</strong> <%= (route.distance / 1000).toFixed(1); %> km</p>
+                                <p><strong>Duration:</strong> <%= Math.floor(route.duration / 60); %> min</p>
                             </li>
                         <% }); %>
                     </ul>
                 </div>
-            </div>
+            <% } else { %>
+                <div class="no-data">
+                    <p class="no-data-label">No user coordinates set!</p>
+                </div>
+            <% } %>
         </div>
-        <div class='widget' id="todo-widget">
-            <h2 class="heading">Todo</h2>
-            <div class="content">
+    </div>
+    <div class='widget' id="todo-widget">
+        <h2 class="heading">Todo</h2>
+        <div class="content">
+            <% if(todos) { %>
                 <div id="todo-items">
                     <% todos.forEach(todo => { %>
-                        <div class="todo-item" id="<%= todo.id %>">
-                            <h3><%= todo.content %></h3>
+                        <div class="todo-item" id="<%= todo.id; %>">
+                            <h3><%= todo.content; %></h3>
                         </div>
                     <% }); %>
                 </div>
@@ -102,40 +124,46 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class='widget' id="calendar-widget">
-            <h2 class="heading">Calendar</h2>
-            <div class="content">
-                <% if (!googleCalendarAccessToken) { %>
-                    <form action="/google" method="POST" class="google-auth">
-                        <button type="submit">Authenticate with Google</button>
-                    </form>
-                <% } else { %>
-                    <div class="events">
-                        <% events.forEach(function (event) { %>
-                            <div class="event"
-                            <% if(event.color) { %>
-                                style="<%= `background-color:${event.color};` %>"
-                            <% } %>>
-                                <h3><%= event.summary %></h3>
-                                <% if (event.start.dateTime && event.end.dateTime) { %>
-                                    <p><%= event.start.dateTime %> - <%= event.end.dateTime %></p>
-                                <% } %>
-                            </div>
-                        <% }); %>
-                    </div>
-                <% } %>    
-            </div>
-        </div>
-        <div class='widget' id="apod-widget">
-            <h2 class="heading" id="apod-heading">Astronomy Picture of the Day</h2>
-            <p id="apod-title"><%= apodTitle %></p>
-            <a id="apod-link" href="<%= apodLink %>">
-                <img id="apod-image" src="<%= apodImageLink %>" alt="<%= apodTitle %>"></img>
-            </a>
+            <% } else { %>
+                <div class="no-data">
+                    <p class="no-data-label">No Todoist Api Key set!</p>
+                </div>
+            <% } %>
         </div>
     </div>
+    <div class='widget' id="calendar-widget">
+        <h2 class="heading">Calendar</h2>
+        <div class="content">
+            <% if (!googleCalendarAccessToken) { %>
+                <form action="/google" method="POST" class="google-auth">
+                    <button type="submit">Authenticate with Google</button>
+                </form>
+            <% } else { %>
+                <div class="events">
+                    <% events.forEach(function (event) { %>
+                        <div class="event"
+                        <% if(event.color) { %>
+                             style="<%= `background-color:${event.color};`; %>"
+                                <% } %>
+                        >
+                            <h3><%= event.summary; %></h3>
+                            <% if (event.start.dateTime && event.end.dateTime) { %>
+                                <p><%= event.start.dateTime; %> - <%= event.end.dateTime; %></p>
+                            <% } %>
+                        </div>
+                    <% }); %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+    <div class='widget' id="apod-widget">
+        <h2 class="heading" id="apod-heading">Astronomy Picture of the Day</h2>
+        <p id="apod-title"><%= apodTitle; %></p>
+        <a id="apod-link" href="<%= apodLink; %>">
+            <img id="apod-image" src="<%= apodImageLink; %>" alt="<%= apodTitle; %>"></img>
+        </a>
+    </div>
+</div>
 
-    <script src="js/dashboard.js"></script>
-    <%- include('includes/end.ejs') %>
+<script src="js/dashboard.js"></script>
+<%- include('includes/end.ejs') %>

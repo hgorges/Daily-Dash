@@ -3,6 +3,8 @@ import { dashboardController } from '../controller/dashboard';
 import { getAuthUrl, redirectFromGoogle } from '../controller/google-auth';
 import todoModel from '../models/todoModel';
 import { AuthRequest, castPromiseToVoid } from '../utils/utils';
+import { settingsController } from '../controller/settings';
+import userModel from '../models/userModel';
 
 const router = express.Router();
 
@@ -48,6 +50,19 @@ router.post(
     castPromiseToVoid(async (_req, res: Response, _next) => {
         res.redirect(getAuthUrl());
     }),
+);
+
+router.get(
+    '/settings',
+    castPromiseToVoid(async (req: AuthRequest, res, _next) => {
+        const user = await userModel.getUserByUsername(req.session.username);
+        res.render('settings', { path: '/settings', user });
+    }) as express.RequestHandler,
+);
+
+router.post(
+    '/settings',
+    castPromiseToVoid(settingsController) as express.RequestHandler,
 );
 
 router.get('/not-found', (_req, res) => {

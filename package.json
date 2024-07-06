@@ -6,7 +6,7 @@
   "main": "./src/server.ts",
   "scripts": {
     "build": "tsc",
-    "start": "nodemon ./src/server.ts",
+    "start": "nodemon -L ./src/server.ts",
     "test": "jest",
     "lint": "eslint .",
     "format:check": "prettier . --check",

@@ -19,15 +19,21 @@ type TrafficRoutesData = {
 
 const trafficModel = {
     async getGoogleMapsApiKey(): Promise<{ api_key: string }> {
-        const googleMapsApiKey = await db('api_keys')
+        return db('api_keys')
             .where('api_name', 'Google Maps')
             .select('api_key')
             .first();
-        return googleMapsApiKey;
     },
 
-    async getTrafficData(isHome: boolean, user?: User): Promise<TrafficData> {
+    async getTrafficData(
+        isHome: boolean,
+        user?: User,
+    ): Promise<TrafficData | null> {
         assert(user, 'User not found');
+
+        if (user.home_gps === null || user.work_gps === null) {
+            return null;
+        }
 
         const client = new Client({});
 
@@ -45,7 +51,7 @@ const trafficModel = {
             },
         });
 
-        const trafficData = {
+        return {
             from: directions.data.routes[0].legs[0].start_address,
             to: directions.data.routes[0].legs[0].end_address,
             routes: directions.data.routes
@@ -56,7 +62,6 @@ const trafficModel = {
                 }))
                 .sort((a, b) => a.duration - b.duration),
         };
-        return trafficData;
     },
 };
 

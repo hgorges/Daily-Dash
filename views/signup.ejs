@@ -1,0 +1,43 @@
+<%- include('includes/head.ejs') %>
+<link rel="stylesheet" href="/css/content/signup.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<header class="main-header">
+    <div id="daily-dash-banner">
+        <p>Daily Dash</p>
+    </div>
+</header>
+<div class="signup-page">
+    <form action="/signup" method="POST">
+        <div class="input-container">
+            <i class="fa fa-user icon"></i>
+            <input type="text" name="username" placeholder="Username" required>
+        </div>
+        <div class="input-container">
+            <i class="fa fa-solid fa-address-card icon"></i>
+            <input type="text" name="first_name" placeholder="First Name" required class="half-width">
+            <input type="text" name="last_name" placeholder="Last Name" required class="half-width">
+        </div>
+        <div class="input-container">
+            <i class="fa fa-envelope icon"></i>
+            <input type="text" name="email" placeholder="E-Mail" required>
+        </div>
+        <div class="input-container">
+            <i class="fa fa-lock icon"></i>
+            <input type="password" name="password" placeholder="Password" required id="password">
+        </div>
+        <div class="input-container">
+            <i class="fa fa-solid fa-rotate-right icon"></i>
+            <input type="password" name="confirm_password" placeholder="Confirm Password" required
+                   id="password-confirm">
+        </div>
+        <button type="submit">Sign Up</button>
+    </form>
+</div>
+
+<%- include('includes/end.ejs') %>

@@ -10,6 +10,9 @@ const apodModel = {
     async getApodData(): Promise<ApodData> {
         let currentApodData: ApodData;
 
+        // TODO
+        // Maybe switch to https://www.nasa.gov/feeds/iotd-feed/ due to inconsistent rss feed from apod.com
+
         try {
             const apodRssFeed = await new Parser().parseURL(
                 'https://apod.com/feed.rss',

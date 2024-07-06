@@ -5,14 +5,19 @@
         <nav class="main-header__nav" aria-label="Main Navigation">
             <ul class="main-header__item-list">
                 <li class="main-header__item">
-                    <a class="<%= path === '/' ? 'active' : '' %>" href="/">
+                    <a class="<%= path === '/' ? 'active' : ''; %>" href="/">
                         Dashboard
                     </a>
                 </li>
             </ul>
-            <ul class="main-header__logout">
+            <ul class="main-header__options">
                 <li class="main-header__item" id="main-header__last-item">
-                    <a class="<%= path === '/logout' %>" href="/logout">
+                    <a class="<%= path === '/settings'; %>" href="/settings">
+                        Settings
+                    </a>
+                </li>
+                <li class="main-header__item" id="main-header__last-item">
+                    <a class="<%= path === '/logout'; %>" href="/logout">
                         Logout
                     </a>
                 </li>
@@ -25,18 +30,23 @@
     <nav class="mobile-nav" aria-label="Mobile Main Navigation">
         <ul class="mobile-nav__item-list">
             <li class="mobile-nav__item">
-                <a class="<%= path === '/' ? 'active' : '' %>" href="/">
+                <a class="<%= path === '/' ? 'active' : ''; %>" href="/">
                     Dashboard
                 </a>
             </li>
         </ul>
-        <ul class="mobile-nav__logout">
+        <ul class="mobile-nav__options">
             <li class="mobile-nav__item">
-                <a class="<%= path === '/logout' %>" href="/logout">
+                <a class="<%= path === '/settings'; %>" href="/settings">
+                    Settings
+                </a>
+            </li>
+            <li class="mobile-nav__item">
+                <a class="<%= path === '/logout'; %>" href="/logout">
                     Logout
                 </a>
             </li>
         </ul>
     </nav>
 
-<!-- closing div tag in end.ejs -->
+    <!-- closing div tag in end.ejs -->
