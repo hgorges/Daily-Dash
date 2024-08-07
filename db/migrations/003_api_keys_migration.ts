@@ -1,5 +1,10 @@
 import { Knex } from 'knex';
 
+/*
+    Migrations are modified for testing purposes.
+    In a production environment, migrations should not be altered.
+ */
+
 export async function up(knex: Knex): Promise<void> {
     await knex.schema.createTable('api_keys', (table) => {
         table

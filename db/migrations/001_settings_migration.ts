@@ -1,5 +1,10 @@
 import { Knex } from 'knex';
 
+/*
+    Migrations are modified for testing purposes.
+    In a production environment, migrations should not be altered.
+ */
+
 export async function up(knex: Knex): Promise<void> {
     const dbResult = await knex.raw(/* sql */ `SELECT current_database()`);
     const dbName = dbResult.rows[0].current_database;

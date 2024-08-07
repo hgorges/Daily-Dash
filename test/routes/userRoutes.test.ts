@@ -1,9 +1,9 @@
 import express from 'express';
 import request from 'supertest';
-import router from '../../src/routes/userRoutes';
+import userRouter from '../../src/routes/userRoutes';
 
 const app = express();
-app.use('/', router);
+app.use('/', userRouter);
 jest.mock('../../src/middleware/authMiddleware', () => ({
     checkAuthentication: (_req: any, _res: any, next: any) => {
         next();

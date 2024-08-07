@@ -9,6 +9,13 @@
                         Dashboard
                     </a>
                 </li>
+                <% if(isAdmin) { %>
+                    <li class="main-header__item">
+                        <a class="<%= path === '/admin' ? 'active' : ''; %>" href="/admin">
+                            Admin
+                        </a>
+                    </li>
+                <% } %>
             </ul>
             <ul class="main-header__options">
                 <li class="main-header__item" id="main-header__last-item">
@@ -34,6 +41,13 @@
                     Dashboard
                 </a>
             </li>
+            <% if(isAdmin) { %>
+                <li class="mobile-nav__item">
+                    <a class="<%= path === '/admin' ? 'active' : ''; %>" href="/admin">
+                        Admin
+                    </a>
+                </li>
+            <% } %>
         </ul>
         <ul class="mobile-nav__options">
             <li class="mobile-nav__item">

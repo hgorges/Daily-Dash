@@ -10,50 +10,52 @@
 <%- include('includes/navigation.ejs') %>
 <div class="settings-page">
     <form action="/settings" method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <div class="input-container">
             <i class="fa fa-user icon"></i>
-            <input type="text" name="username" placeholder="Username" value="<%= user.username %>" required>
+            <input type="text" name="username" placeholder="Username" value="<%= user.username; %>" required>
         </div>
         <div class="input-container">
             <i class="fa fa-solid fa-address-card icon"></i>
-            <input type="text" name="first_name" placeholder="First Name" value="<%= user.first_name %>" required
+            <input type="text" name="first_name" placeholder="First Name" value="<%= user.first_name; %>" required
                    class="half-width">
-            <input type="text" name="last_name" placeholder="Last Name" value="<%= user.last_name %>" required
+            <input type="text" name="last_name" placeholder="Last Name" value="<%= user.last_name; %>" required
                    class="half-width">
         </div>
         <div class="input-container">
             <i class="fa fa-envelope icon"></i>
-            <input type="text" name="email" placeholder="E-Mail" value="<%= user.email %>" required>
+            <input type="text" name="email" placeholder="E-Mail" value="<%= user.email; %>" required>
         </div>
         <div class="input-container">
             <i class="fa fa-solid fa-house icon"></i>
-            <input type="text" name="home_latitude" placeholder="Home Latitude" value="<%= user.home_gps.x %>" required
+            <input type="text" name="home_latitude" placeholder="Home Latitude" value="<%= user.home_gps?.x; %>"
+                   required
                    class="half-width">
-            <input type="text" name="home_longitude" placeholder="Home Longitude" value="<%= user.home_gps.y %>"
+            <input type="text" name="home_longitude" placeholder="Home Longitude" value="<%= user.home_gps?.y; %>"
                    required
                    class="half-width">
         </div>
         <div class="input-container">
             <i class="fa fa-solid fa-briefcase icon"></i>
-            <input type="text" name="work_latitude" placeholder="Work Latitude" value="<%= user.work_gps.x %>"
+            <input type="text" name="work_latitude" placeholder="Work Latitude" value="<%= user.work_gps?.x; %>"
                    required
                    class="half-width">
-            <input type="text" name="work_longitude" placeholder="Work Longitude" value="<%= user.work_gps.y %>"
+            <input type="text" name="work_longitude" placeholder="Work Longitude" value="<%= user.work_gps?.y; %>"
                    required
                    class="half-width">
         </div>
         <div class="input-container">
             <i class="fa fa-calendar icon"></i>
-            <input type="text" name="calendars" placeholder="Calendars" value="<%= user.calendars %>" required>
+            <input type="text" name="calendars" placeholder="Calendars" value="<%= user.calendars; %>">
         </div>
         <div class="input-container">
             <i class="fa fa-globe icon"></i>
-            <input type="text" name="locale" placeholder="Locale (default: en-US)" value="<%= user.locale %>" required>
+            <input type="text" name="locale" placeholder="Locale (default: en-US)" value="<%= user.locale; %>" required>
         </div>
         <div class="input-container">
             <i class="fa fa-clock icon"></i>
             <input type="text" name="time_zone" placeholder="Time Zone (default: Etc/Zulu)"
-                   value="<%= user.time_zone %>" required>
+                   value="<%= user.time_zone; %>" required>
         </div>
         <div class="input-container">
             <i class="fa fa-lock icon"></i>

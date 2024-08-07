@@ -34,18 +34,18 @@ const todoModel = {
 
     async completeTodo(username: string, id: string): Promise<void> {
         const api_key = await this.getApiKey(username);
-        assert(api_key, 'Todoist api_key not found');
+        assert(api_key != null, 'Todoist api_key not found');
 
-        this.getTodoistApi(api_key).closeTask(id);
+        await this.getTodoistApi(api_key).closeTask(id);
     },
 
     async postponeTodo(username: string, id: string): Promise<void> {
         const api_key = await this.getApiKey(username);
-        assert(api_key, 'Todoist api_key not found');
+        assert(api_key != null, 'Todoist api_key not found');
 
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
-        this.getTodoistApi(api_key).updateTask(id, {
+        await this.getTodoistApi(api_key).updateTask(id, {
             dueDate: tomorrow.toISOString().slice(0, 10),
         });
     },

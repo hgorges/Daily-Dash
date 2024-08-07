@@ -5,6 +5,10 @@
     --secondary-color: #90aead;
     --accent-color: #e64833;
     --background-color: #fbe9d0;
+    --info-color: #31708f;
+    --info-background-color: #d9edf7;
+    --error-color: #d8000c;
+    --error-background-color: #ffdddd;
     --low: #a4d68e;
     --moderate: #f9ecb0;
     --high: #ffab6e;
@@ -67,6 +71,30 @@ p {
 #page-content.background {
     background-color: var(--background-color);
     transition: background-color 0.3s ease;
+}
+
+.info-message {
+    padding: 15px;
+    background-color: var(--info-background-color);
+    color: var(--info-color);
+    border-radius: 8px;
+    margin: 10px 10px 20px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
+    font-weight: bold;
+    position: relative;
+    border-left: 4px solid var(--info-color);
+}
+
+.error-message {
+    padding: 15px;
+    background-color: var(--error-background-color);
+    color: var(--error-color);
+    border-radius: 8px;
+    margin: 10px 10px 20px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
+    font-weight: bold;
+    position: relative;
+    border-left: 4px solid var(--error-color);
 }
 
 @media (max-width: 768px) {

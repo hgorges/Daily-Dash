@@ -7,7 +7,10 @@ export type User = {
     first_name: string;
     last_name: string;
     email: string;
+    is_admin: boolean;
     password: string;
+    password_reset_token: string | null;
+    password_reset_token_expiration: Date | null;
     home_gps: { x: number; y: number };
     work_gps: { x: number; y: number };
     created_at: Date;
@@ -122,18 +125,24 @@ const userModel = {
         password: string,
     ): Promise<User | null> {
         const user = await db<User>('users')
-            .where({ username: username.toLocaleLowerCase() })
+            .where({ username: username })
             .first();
 
         if (!user) {
             return null;
         }
         const isValidPassword = await bcrypt.compare(password, user.password);
-        return isValidPassword ? user : null;
-    },
 
-    async getUserById(user_id: string): Promise<User | undefined> {
-        return db<User>('users').where({ user_id }).first();
+        if (!isValidPassword) {
+            return null;
+        }
+
+        db('users').update({
+            password_reset_token: null,
+            password_reset_token_expiration: null,
+        });
+
+        return user;
     },
 
     async getUserByEmail(email: string): Promise<User | undefined> {
@@ -141,9 +150,47 @@ const userModel = {
     },
 
     async getUserByUsername(username: string): Promise<User | undefined> {
+        return db<User>('users').where({ username: username }).first();
+    },
+
+    async getUserByValidPasswordResetToken(
+        passwordResetToken: string,
+    ): Promise<User | undefined> {
         return db<User>('users')
-            .where({ username: username.toLocaleLowerCase() })
+            .where('password_reset_token', passwordResetToken)
+            .where('password_reset_token_expiration', '>', new Date())
             .first();
+    },
+
+    async changePassword(username: string, password: string): Promise<void> {
+        const salt = await bcrypt.genSalt();
+        await db('users')
+            .update({
+                password: await this.hashPassword(password, salt),
+                password_reset_token: null,
+                password_reset_token_expiration: null,
+                updated_at: new Date(),
+                updated_by: username,
+            })
+            .where({ username })
+            .where('password_reset_token', 'IS NOT', null)
+            .where('password_reset_token_expiration', '>', new Date());
+    },
+
+    async setPasswordResetTokenForUser(
+        username: string,
+        randomUuid: `${string}-${string}-${string}-${string}-${string}`,
+    ): Promise<void> {
+        await db('users')
+            .update({
+                password_reset_token: randomUuid,
+                password_reset_token_expiration: new Date(Date.now() + 3600000),
+            })
+            .where({
+                username,
+                password_reset_token: null,
+                password_reset_token_expiration: null,
+            });
     },
 };
 

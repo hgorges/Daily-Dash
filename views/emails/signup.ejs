@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .content {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .content > p {
+            color: #555;
+        }
+
+        .footer {
+            font-size: 14px;
+            text-align: center;
+            color: #888;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">Welcome to Daily Dash!</div>
+    <div class="content">
+        <p>Dear <%= firstName; %> <%= lastName; %>,</p>
+        <p>Thank you for registering with Daily Dash. We're excited to have you on board and look
+            forward to helping you
+            manage your daily tasks more efficiently.</p>
+        <p>Your account <b><%= username %></b> has been created successfully. You can now log in using your registered
+            username and password. We encourage you to explore our features and customize your dashboard to suit your
+            needs.</p>
+        <p>If you have any questions or need assistance, please do not hesitate to contact our support team at
+            <a href="mailto:support@cryptospace.dev">support@cryptospace.dev</a>. We're here to help!</p>
+        <p>Thank you for choosing Daily Dash. Let's make productivity your new habit!</p>
+    </div>
+    <div class="footer">
+        Best regards,<br>
+        The Daily Dash Team
+    </div>
+</div>
+
+</body>
+
+</html>

@@ -12,6 +12,7 @@ import { User } from '../models/userModel';
 
 export type AuthSession = Session & {
     username: string;
+    isAdmin: boolean;
     isAuthenticated: boolean;
     isHome: boolean;
     googleCalendarAccessToken?: string;

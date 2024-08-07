@@ -136,6 +136,7 @@
         <div class="content">
             <% if (!googleCalendarAccessToken) { %>
                 <form action="/google" method="POST" class="google-auth">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <button type="submit">Authenticate with Google</button>
                 </form>
             <% } else { %>

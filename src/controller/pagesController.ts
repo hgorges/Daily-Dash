@@ -14,6 +14,8 @@ export const dashboardController = async (
 ): Promise<void> => {
     res.status(200).render('dashboard', {
         path: '/',
+        csrfToken: res.locals.csrfToken,
+        isAdmin: req.session.isAdmin,
         ...(await newsModel.getNewsData()),
         weatherData: await weatherModel.getWeatherData(
             req.session.username,
@@ -29,4 +31,20 @@ export const dashboardController = async (
         googleCalendarAccessToken: req.session.googleCalendarAccessToken,
         ...(await apodModel.getApodData()),
     });
+};
+
+export const adminController = async (
+    req: AuthRequest,
+    res: Response,
+    _next: NextFunction,
+): Promise<void> => {
+    if (req.session.isAdmin) {
+        res.status(200).render('admin', {
+            path: '/admin',
+            csrfToken: res.locals.csrfToken,
+            isAdmin: req.session.isAdmin,
+        });
+    } else {
+        res.redirect('/');
+    }
 };

@@ -42,7 +42,7 @@ const weatherModel = {
         isHome: boolean,
     ): Promise<WeatherData | null> {
         const { api_key } = await this.getWeatherApiKey();
-        assert(api_key, 'Weather API key not found');
+        assert(api_key !== '', 'Weather API key not found');
 
         const user = await userModel.getUserByUsername(username);
         assert(user, 'User not found');
@@ -65,7 +65,7 @@ const weatherModel = {
         }));
 
         const placeResponse = await axios.get(
-            `http://api.openweathermap.org/geo/1.0/reverse?lat=${gps.x}&lon=${gps.y}&limit=1&appid=${api_key}`,
+            `https://api.openweathermap.org/geo/1.0/reverse?lat=${gps.x}&lon=${gps.y}&limit=1&appid=${api_key}`,
         );
 
         let uvi_color = '';

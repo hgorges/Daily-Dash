@@ -4,6 +4,7 @@
     align-items: center;
     min-height: calc(100vh - 3.5rem - 2rem);
     background-color: var(--background-color);
+    flex-direction: column;
 }
 
 .signup-page form {
@@ -12,6 +13,23 @@
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
     border-radius: 8px;
     width: 300px;
+}
+
+.signup-area p {
+    font-size: 1em;
+    color: var(--primary-color);
+    text-align: center;
+    margin-top: 10px;
+}
+
+.signup-area p a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.signup-area p a:hover {
+    text-decoration: underline;
 }
 
 .input-container {
@@ -61,6 +79,18 @@
 .signup-page button:hover {
     background-color: var(--primary-color);
     color: var(--accent-color);
+}
+
+.error-message {
+    padding: 15px;
+    background-color: var(--error-background-color);
+    color: var(--error-color);
+    border-radius: 8px;
+    margin: 10px 10px 20px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
+    font-weight: bold;
+    position: relative;
+    border-left: 4px solid var(--error-color);
 }
 
 #daily-dash-banner {
