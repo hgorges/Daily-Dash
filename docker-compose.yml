@@ -10,7 +10,7 @@ services:
     pull_policy: never
     command: sh -c "npm run migrate && npm start"
     ports:
-      - ${PORT}:${PORT}
+      - ${PORT}:443
       - ${DEBUG_PORT}:${DEBUG_PORT}
     volumes:
       - ./src:/app/src
@@ -33,9 +33,9 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - ${DB_PORT}:${DB_PORT}
+      - ${DB_PORT}:5432
     healthcheck:
-      test: ['CMD', 'pg_isready', '-U', '$DB_USERNAME']
+      test: [ 'CMD', 'pg_isready', '-U', '$DB_USERNAME' ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -45,12 +45,12 @@ services:
     image: redis:latest
     restart: always
     ports:
-      - ${REDIS_PORT}:${REDIS_PORT}
+      - ${REDIS_PORT}:6379
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
     volumes:
       - cache-data:/data
     healthcheck:
-      test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
+      test: [ 'CMD', 'redis-cli', '--raw', 'incr', 'ping' ]
       interval: 10s
       timeout: 5s
       retries: 5
