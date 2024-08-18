@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { NextFunction, Response } from 'express';
+import { NextFunction, Request, Response } from 'express-serve-static-core';
 import fs from 'fs';
 import { google } from 'googleapis';
 import path from 'path';
-import { AuthRequest } from '../utils/utils';
 
 const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
 const OAuth2SecretsPath = path.join(
@@ -14,7 +13,11 @@ const OAuth2SecretsPath = path.join(
     'googleOAuth2.json',
 );
 
-export function getAuthUrl(): string {
+export async function redirectToGoogle(
+    _req: Request,
+    res: Response,
+    _next: NextFunction,
+): Promise<void> {
     const OAuth2Secrets = fs.readFileSync(OAuth2SecretsPath, 'utf-8');
     const { clientId, clientSecret, redirectUri } = JSON.parse(OAuth2Secrets);
     const oauth2Client = new google.auth.OAuth2({
@@ -23,25 +26,27 @@ export function getAuthUrl(): string {
         redirectUri,
     });
 
-    return oauth2Client.generateAuthUrl({
-        access_type: 'offline',
-        scope: SCOPES,
-    });
+    res.redirect(
+        oauth2Client.generateAuthUrl({
+            access_type: 'offline',
+            scope: SCOPES,
+        }),
+    );
 }
 
-export const redirectFromGoogle = async (
-    req: AuthRequest,
+export async function redirectFromGoogle(
+    req: Request,
     res: Response,
     _next: NextFunction,
-) => {
+): Promise<void> {
     const code = req.query.code;
 
-    await getToken(req, code as string);
+    await getGoogleAuthToken(req, code as string);
 
     res.redirect('/');
-};
+}
 
-async function getToken(req: AuthRequest, authorizationCode: string) {
+async function getGoogleAuthToken(req: Request, authorizationCode: string) {
     try {
         const OAuth2Secrets = fs.readFileSync(OAuth2SecretsPath, 'utf-8');
         const { clientId, clientSecret, redirectUri } =

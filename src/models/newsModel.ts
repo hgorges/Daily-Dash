@@ -8,7 +8,7 @@ type NewsData = {
     }[];
 };
 
-const apodModel = {
+const newsModel = {
     async getNewsData(): Promise<NewsData> {
         const newsRssFeed = await new Parser().parseURL(
             'https://www.tagesschau.de/index~rss2.xml',
@@ -28,4 +28,4 @@ const apodModel = {
     },
 };
 
-export default apodModel;
+export default newsModel;

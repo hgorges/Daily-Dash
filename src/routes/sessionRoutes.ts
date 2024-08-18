@@ -1,127 +1,43 @@
-import express, { NextFunction, Response } from 'express';
+import express from 'express';
 import {
     changePassword,
     checkAuthentication,
-    createUser,
-    loginUser,
+    createPasswordResetToken,
+    login,
     logoutUser,
-    sendResetPasswordEmail,
-} from '../middleware/authMiddleware';
-import { AuthRequest, castPromiseToVoid } from '../utils/utils';
-import userModel from '../models/userModel';
+    renderLogin,
+    renderPasswordChange,
+    renderPasswordReset,
+    renderSignup,
+    signup,
+} from '../middleware/auth';
 
 const sessionRouter = express.Router();
 
+// Middleware to log requests
 sessionRouter.use((req, _res, next) => {
     console.log(`${req.method} ${req.url} called`);
     next();
 });
 
-sessionRouter.get('/password-reset', ((
-    req: AuthRequest,
-    res: Response,
-    _next: NextFunction,
-) => {
-    if (req.session.isAuthenticated) {
-        res.redirect('/');
-        return;
-    }
-    const infoMessage = req.flash('info');
-    const errorMessage = req.flash('error');
-    res.render('password-reset', {
-        csrfToken: res.locals.csrfToken,
-        infoMessage: infoMessage.length > 0 ? infoMessage[0] : null,
-        errorMessage: errorMessage.length > 0 ? errorMessage[0] : null,
-    });
-}) as express.RequestHandler);
+sessionRouter.get('/password-reset', renderPasswordReset);
 
-sessionRouter.post(
-    '/password-reset',
-    castPromiseToVoid(sendResetPasswordEmail) as express.RequestHandler,
-);
+sessionRouter.post('/password-reset', createPasswordResetToken);
 
-sessionRouter.get(
-    '/password-change/:passwordResetToken',
-    castPromiseToVoid(
-        async (req: AuthRequest, res: Response, _next: NextFunction) => {
-            const user = await userModel.getUserByValidPasswordResetToken(
-                req.params.passwordResetToken,
-            );
-            if (!user) {
-                req.flash('error', 'Invalid password reset token!');
-                res.redirect('/login');
-                return;
-            }
+sessionRouter.get('/password-change/:passwordResetToken', renderPasswordChange);
 
-            const infoMessage = req.flash('info');
-            const errorMessage = req.flash('error');
-            res.render('password-change', {
-                csrfToken: res.locals.csrfToken,
-                userId: user.user_id,
-                passwordResetToken: req.params.passwordResetToken,
-                infoMessage: infoMessage.length > 0 ? infoMessage[0] : null,
-                errorMessage: errorMessage.length > 0 ? errorMessage[0] : null,
-            });
-        },
-    ) as express.RequestHandler,
-);
+sessionRouter.post('/password-change/:passwordResetToken', changePassword);
 
-sessionRouter.post('/password-change/:passwordResetToken', async (req, res) => {
-    await changePassword(req, res);
-});
+sessionRouter.get('/login', renderLogin);
 
-sessionRouter.get('/login', ((
-    req: AuthRequest,
-    res: Response,
-    _next: NextFunction,
-) => {
-    // TODO delete password_reset_token and password_reset_token_expiration if logged in properly without resetting password
-    if (req.session.isAuthenticated) {
-        res.redirect('/');
-        return;
-    }
-    const infoMessage = req.flash('info');
-    const errorMessage = req.flash('error');
-    res.render('login', {
-        csrfToken: res.locals.csrfToken,
-        infoMessage: infoMessage.length > 0 ? infoMessage[0] : null,
-        errorMessage: errorMessage.length > 0 ? errorMessage[0] : null,
-    });
-}) as express.RequestHandler);
+sessionRouter.post('/login', login);
 
-sessionRouter.post('/login', async (req, res) => {
-    await loginUser(req as AuthRequest, res);
-});
+sessionRouter.get('/signup', renderSignup);
 
-sessionRouter.get('/signup', ((
-    req: AuthRequest,
-    res: Response,
-    _next: NextFunction,
-) => {
-    if (req.session.isAuthenticated) {
-        res.redirect('/');
-        return;
-    }
-    const errorMessage = req.flash('error');
-    res.render('signup', {
-        csrfToken: res.locals.csrfToken,
-        errorMessage: errorMessage.length > 0 ? errorMessage[0] : null,
-    });
-}) as express.RequestHandler);
+sessionRouter.post('/signup', signup);
 
-sessionRouter.post('/signup', async (req, res) => {
-    await createUser(req as AuthRequest, res);
-});
+sessionRouter.get('/logout', logoutUser);
 
-sessionRouter.get(
-    '/logout',
-    castPromiseToVoid(logoutUser) as express.RequestHandler,
-);
-
-// TODO
-// router.use(...handler) for multiple handlers
-sessionRouter.use(
-    castPromiseToVoid(checkAuthentication) as express.RequestHandler,
-);
+sessionRouter.use(checkAuthentication);
 
 export default sessionRouter;

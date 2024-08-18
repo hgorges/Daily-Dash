@@ -1,14 +1,5 @@
-export function castPromiseToVoid<Args extends unknown[]>(
-    fn: (...args: Args) => Promise<unknown>,
-): (...args: Args) => void {
-    return (...args) => {
-        void fn(...args);
-    };
-}
-
-import { Request } from 'express';
+import path from 'path';
 import { Session } from 'express-session';
-import { User } from '../models/userModel';
 
 export type AuthSession = Session & {
     username: string;
@@ -18,7 +9,4 @@ export type AuthSession = Session & {
     googleCalendarAccessToken?: string;
 };
 
-export type AuthRequest = Request & {
-    session?: AuthSession;
-    user?: User;
-};
+export const fileRoot = path.join(__dirname, '..', '..');

@@ -4,11 +4,11 @@ import { formatRFC3339 } from 'date-fns';
 import { OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
 import { db } from '../server';
-import { AuthRequest } from '../utils/utils';
+import { Request } from 'express-serve-static-core';
 
 const calendarModel = {
     async getCalendars(
-        req: AuthRequest,
+        req: Request,
     ): Promise<calendar_v3.Schema$CalendarListEntry[] | null> {
         const { username, googleCalendarAccessToken: access_token } =
             req.session;
@@ -40,9 +40,7 @@ const calendarModel = {
         );
     },
 
-    async getCalendarEvents(
-        req: AuthRequest,
-    ): Promise<calendar_v3.Schema$Event[]> {
+    async getCalendarEvents(req: Request): Promise<calendar_v3.Schema$Event[]> {
         const { googleCalendarAccessToken: access_token } = req.session;
 
         if (access_token == null) {

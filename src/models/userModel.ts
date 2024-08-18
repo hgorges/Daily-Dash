@@ -188,8 +188,12 @@ const userModel = {
             })
             .where({
                 username,
-                password_reset_token: null,
-                password_reset_token_expiration: null,
+            })
+            .andWhere(function () {
+                this.where({
+                    password_reset_token: null,
+                    password_reset_token_expiration: null,
+                }).orWhere('password_reset_token_expiration', '<', new Date());
             });
     },
 };

@@ -1,14 +1,46 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express-serve-static-core';
 import userModel from '../models/userModel';
-import { AuthRequest } from '../utils/utils';
 import path from 'path';
 import { renderFile } from 'ejs';
-import mailer from '../utils/mailer';
+import mailer from '../config/mailer';
+import assert from 'node:assert';
 
-export async function loginUser(
-    req: AuthRequest,
+export async function checkAuthentication(
+    req: Request,
     res: Response,
+    next: NextFunction,
 ): Promise<void> {
+    if (req.session.isAuthenticated) {
+        const user = await userModel.getUserByUsername(req.session.username);
+        assert(user, 'User not found in database');
+
+        req.user = user;
+        next();
+    } else {
+        res.redirect('/login');
+    }
+}
+
+export async function renderLogin(
+    req: Request,
+    res: Response,
+    _next: NextFunction,
+): Promise<void> {
+    // TODO delete password_reset_token and password_reset_token_expiration if logged in properly without resetting password
+    if (req.session.isAuthenticated) {
+        res.redirect('/');
+        return;
+    }
+    const infoMessage = req.flash('info');
+    const errorMessage = req.flash('error');
+    res.render('login', {
+        csrfToken: res.locals.csrfToken,
+        infoMessage: infoMessage.length > 0 ? infoMessage[0] : null,
+        errorMessage: errorMessage.length > 0 ? errorMessage[0] : null,
+    });
+}
+
+export async function login(req: Request, res: Response): Promise<void> {
     const { username, password } = req.body;
 
     if (username.toLowerCase() === 'system') {
@@ -72,8 +104,53 @@ export async function changePassword(
     res.redirect('/login');
 }
 
-export async function sendResetPasswordEmail(
-    req: AuthRequest,
+export async function renderPasswordReset(
+    req: Request,
+    res: Response,
+    _next: NextFunction,
+): Promise<void> {
+    if (req.session.isAuthenticated) {
+        res.redirect('/');
+        return;
+    }
+    const infoMessage = req.flash('info');
+    const errorMessage = req.flash('error');
+
+    res.render('password-reset', {
+        csrfToken: res.locals.csrfToken,
+        infoMessage: infoMessage.length > 0 ? infoMessage[0] : null,
+        errorMessage: errorMessage.length > 0 ? errorMessage[0] : null,
+    });
+}
+
+export async function renderPasswordChange(
+    req: Request,
+    res: Response,
+    _next: NextFunction,
+): Promise<void> {
+    const user = await userModel.getUserByValidPasswordResetToken(
+        req.params.passwordResetToken,
+    );
+    if (!user) {
+        req.flash('error', 'Invalid password reset token!');
+        res.redirect('/login');
+        return;
+    }
+
+    const infoMessage = req.flash('info');
+    const errorMessage = req.flash('error');
+
+    res.render('password-change', {
+        csrfToken: res.locals.csrfToken,
+        userId: user.user_id,
+        passwordResetToken: req.params.passwordResetToken,
+        infoMessage: infoMessage.length > 0 ? infoMessage[0] : null,
+        errorMessage: errorMessage.length > 0 ? errorMessage[0] : null,
+    });
+}
+
+export async function createPasswordResetToken(
+    req: Request,
     res: Response,
     _next: NextFunction,
 ): Promise<void> {
@@ -103,10 +180,23 @@ export async function sendResetPasswordEmail(
     res.redirect('/login');
 }
 
-export async function createUser(
-    req: AuthRequest,
+export async function renderSignup(
+    req: Request,
     res: Response,
+    _next: NextFunction,
 ): Promise<void> {
+    if (req.session.isAuthenticated) {
+        res.redirect('/');
+        return;
+    }
+    const errorMessage = req.flash('error');
+    res.render('signup', {
+        csrfToken: res.locals.csrfToken,
+        errorMessage: errorMessage.length > 0 ? errorMessage[0] : null,
+    });
+}
+
+export async function signup(req: Request, res: Response): Promise<void> {
     const {
         username,
         first_name: firstName,
@@ -165,7 +255,7 @@ export async function createUser(
 }
 
 export async function logoutUser(
-    req: AuthRequest,
+    req: Request,
     res: Response,
     _next: NextFunction,
 ): Promise<void> {
@@ -174,17 +264,4 @@ export async function logoutUser(
         res.clearCookie('__daily-dash.x-csrf-token');
         res.redirect('/login');
     });
-}
-
-export async function checkAuthentication(
-    req: AuthRequest,
-    res: Response,
-    next: NextFunction,
-): Promise<void> {
-    if (req.session.isAuthenticated) {
-        req.user = await userModel.getUserByUsername(req.session.username);
-        next();
-    } else {
-        res.redirect('/login');
-    }
 }

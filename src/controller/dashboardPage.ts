@@ -1,17 +1,16 @@
-import { NextFunction, Response } from 'express';
 import apodModel from '../models/apodModel';
 import calendarModel from '../models/calendarModel';
 import newsModel from '../models/newsModel';
 import todoModel from '../models/todoModel';
 import trafficModel from '../models/trafficModel';
 import weatherModel from '../models/weatherModel';
-import { AuthRequest } from '../utils/utils';
+import { NextFunction, Request, Response } from 'express-serve-static-core';
 
-export const dashboardController = async (
-    req: AuthRequest,
+export async function renderDashboardPage(
+    req: Request,
     res: Response,
     _next: NextFunction,
-): Promise<void> => {
+): Promise<void> {
     res.status(200).render('dashboard', {
         path: '/',
         csrfToken: res.locals.csrfToken,
@@ -31,20 +30,31 @@ export const dashboardController = async (
         googleCalendarAccessToken: req.session.googleCalendarAccessToken,
         ...(await apodModel.getApodData()),
     });
-};
+}
 
-export const adminController = async (
-    req: AuthRequest,
+export function switchLocation(
+    req: Request,
     res: Response,
     _next: NextFunction,
-): Promise<void> => {
-    if (req.session.isAdmin) {
-        res.status(200).render('admin', {
-            path: '/admin',
-            csrfToken: res.locals.csrfToken,
-            isAdmin: req.session.isAdmin,
-        });
-    } else {
-        res.redirect('/');
-    }
-};
+): void {
+    req.session.isHome = !req.session.isHome;
+    res.status(200).send();
+}
+
+export async function completeTodo(
+    req: Request,
+    res: Response,
+    _next: NextFunction,
+): Promise<void> {
+    await todoModel.completeTodo(req.session.username, req.params.id);
+    res.status(200).send();
+}
+
+export async function postponeTodo(
+    req: Request,
+    res: Response,
+    _next: NextFunction,
+): Promise<void> {
+    await todoModel.postponeTodo(req.session.username, req.params.id);
+    res.status(200).send();
+}

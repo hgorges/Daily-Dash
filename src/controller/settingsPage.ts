@@ -1,12 +1,24 @@
-import { NextFunction, Response } from 'express';
-import { AuthRequest } from '../utils/utils';
+import { NextFunction, Request, Response } from 'express-serve-static-core';
 import userModel from '../models/userModel';
 
-export const settingsController = async (
-    req: AuthRequest,
+export async function renderSettingsPage(
+    req: Request,
+    res: Response,
+): Promise<void> {
+    const user = await userModel.getUserByUsername(req.session.username);
+    res.render('settings', {
+        path: '/settings',
+        user,
+        csrfToken: res.locals.csrfToken,
+        isAdmin: req.session.isAdmin,
+    });
+}
+
+export async function saveSettings(
+    req: Request,
     res: Response,
     _next: NextFunction,
-): Promise<void> => {
+): Promise<void> {
     const {
         username,
         first_name,
@@ -47,5 +59,6 @@ export const settingsController = async (
         locale,
         time_zone,
     );
+
     res.redirect('/');
-};
+}
