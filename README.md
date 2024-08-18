@@ -6,15 +6,18 @@ Due to its experimental nature, this repository will not serve as an application
 
 ## Preview
 
-### Login Screen / News (in german) / Weather 
+### Login | News (German)
 
 <img src="https://github.com/user-attachments/assets/8f4ca331-9705-4aaa-8f0a-2d47e96ee700" width="300" height="570">
 <img src="https://github.com/user-attachments/assets/37be743d-4d24-42e1-85a0-4d5b0c42fc15" width="300" height="570">
+
+### Weather | Traffic (Address Hidden)
+
 <img src="https://github.com/user-attachments/assets/a60b529d-488f-413c-83c5-d0b297dc8bb8" width="300" height="570">
+<img src="https://github.com/user-attachments/assets/ad24ab2a-d0d9-4177-8d0b-cae05f7c5c86" width="300" height="570">
 
-### Traffic / Todo / Calendar
+### Todo + Calendar
 
-<img src="https://github.com/user-attachments/assets/79333fb7-8da5-4bfd-84b1-79374be52fc2" width="300" height="570">
 <img src="https://github.com/user-attachments/assets/770eeec8-863c-4113-985b-9a2230a1eab8" width="300" height="570">
 
 ## Getting Started
