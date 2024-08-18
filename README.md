@@ -18,7 +18,7 @@ Due to its experimental nature, this repository will not serve as an application
 
 ### Todo + Calendar
 
-<img src="https://github.com/user-attachments/assets/770eeec8-863c-4113-985b-9a2230a1eab8" width="300" height="570">
+<img src="https://github.com/user-attachments/assets/e1eb6a91-8327-427b-9f9f-cb6cf38682f4" width="300" height="570">
 
 ## Getting Started
 
