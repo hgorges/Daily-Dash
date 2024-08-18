@@ -40,6 +40,12 @@ cd DailyDash
 npm install
 ```
 
+### Start the TypeScript Compiler
+
+```bash
+npm run build
+```
+
 ### Start the server
 
 ```bash
