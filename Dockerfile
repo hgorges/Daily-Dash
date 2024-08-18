@@ -6,15 +6,6 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install && npm cache clean --force
+RUN npm install
 
-COPY tsconfig.json ./
-COPY nodemon.json ./
-
-COPY ./src ./src
-COPY ./db ./db
-COPY ./public ./public
-COPY ./views ./views
-COPY ./secrets ./secrets
-
-RUN npm run build
+CMD [ "npm", "start" ]

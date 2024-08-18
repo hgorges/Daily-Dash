@@ -19,7 +19,7 @@
     background-color: var(--secondary-color);
     color: var(--primary-color);
     border-radius: 5px;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
 }
 
 .weather-description:not(:last-child) {
@@ -44,7 +44,7 @@
     background-color: var(--secondary-color);
     color: var(--primary-color);
     border-radius: 5px;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
 }
 
 .temperature-label {
@@ -72,7 +72,7 @@
     padding: 10px;
     background: var(--secondary-color);
     border-radius: 10px;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -121,7 +121,7 @@
     padding: 10px;
     background: var(--secondary-color);
     border-radius: 10px;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
     width: 25px;
     height: 25px;
     display: flex;

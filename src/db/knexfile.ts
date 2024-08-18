@@ -12,10 +12,10 @@ const knexConfig: Knex.Config = {
         timezone: process.env.DB_TIMEZONE!,
     },
     migrations: {
-        directory: './migrations',
+        directory: './dist/db/migrations',
     },
     seeds: {
-        directory: './seeds',
+        directory: './dist/db/seeds',
     },
 };
 

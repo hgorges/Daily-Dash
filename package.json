@@ -5,9 +5,9 @@
   "description": "Your all-in-one dashboard for news, weather, todos, events, and commuting.",
   "main": "./src/server.ts",
   "scripts": {
-    "clean": "rimraf ./out",
-    "build": "tsc",
-    "start": "nodemon -L ./src/server.ts",
+    "clean": "rimraf ./dist",
+    "build": "tsc --watch",
+    "start": "nodemon",
     "test": "jest",
     "lint": "eslint .",
     "format:check": "prettier . --check",
@@ -15,8 +15,7 @@
     "docker:up": "docker compose --env-file ./secrets/.env up",
     "docker:down": "docker-compose --env-file ./secrets/.env down",
     "docker:rmi": "docker rmi daily-dash postgres redis",
-    "migrate": "knex --knexfile ./out/db/knexfile.js migrate:latest",
-    "seed": "knex --knexfile ./out/db/knexfile.js seed:run"
+    "seed": "knex --knexfile ./dist/db/knexfile.js seed:run"
   },
   "repository": {
     "type": "git",
@@ -31,8 +30,8 @@
     "calendar",
     "commuting"
   ],
-  "author": "CryptoSpaceDev",
-  "license": "ISC",
+  "author": "Hannes Gorges",
+  "license": "GPLv3",
   "bugs": {
     "url": "https://github.com/hgorges/DailyDash.git/issues"
   },
@@ -55,6 +54,7 @@
     "@types/serve-favicon": "^2.5.7",
     "@types/supertest": "^2.0.16",
     "@types/xml-js": "^1.0.0",
+    "@types/xml2js": "^0.4.14",
     "@typescript-eslint/eslint-plugin": "^7.0.2",
     "jest": "^29.7.0",
     "nodemon": "^3.0.1",

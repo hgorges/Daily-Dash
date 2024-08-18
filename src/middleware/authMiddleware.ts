@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import userModel from '../models/userModel';
 import { AuthRequest } from '../utils/utils';
-import { mailer } from '../server';
 import path from 'path';
 import { renderFile } from 'ejs';
+import mailer from '../utils/mailer';
 
 export async function loginUser(
     req: AuthRequest,

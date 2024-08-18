@@ -4,44 +4,38 @@ import express from 'express';
 import fs from 'fs';
 import Knex from 'knex';
 import path from 'path';
-import knexConfig from '../db/knexfile';
+import knexConfig from './db/knexfile';
 import configRouter from './routes/configRoutes';
 import sessionRouter from './routes/sessionRoutes';
 import userRouter from './routes/userRoutes';
-import nodemailer from 'nodemailer';
-import nodemailerSendGrid from 'nodemailer-sendgrid';
 
+// Loading environment variables
 dotenv.config({ path: '../secrets/.env' });
 
 export const db = Knex(knexConfig);
+db.migrate.latest().finally(() => {
+    const app = express();
+    const port = parseInt(process.env.PORT as string);
 
-const app = express();
-const port = parseInt(process.env.PORT as string);
+    app.set('view engine', 'ejs');
 
-export const mailer = nodemailer.createTransport(
-    nodemailerSendGrid({
-        apiKey: process.env.SENDGRID_API_KEY!,
-    }),
-);
+    app.use(configRouter);
+    app.use(sessionRouter);
+    app.use(userRouter);
 
-app.set('view engine', 'ejs');
+    const privateKey = fs.readFileSync(
+        path.join(__dirname, '..', 'secrets', 'cryptospace.key'),
+        'utf8',
+    );
+    const certificate = fs.readFileSync(
+        path.join(__dirname, '..', 'secrets', 'cryptospace.crt'),
+        'utf8',
+    );
 
-app.use(configRouter);
-app.use(sessionRouter);
-app.use(userRouter);
+    const credentials = { key: privateKey, cert: certificate };
+    const httpsServer = https.createServer(credentials, app);
 
-const privateKey = fs.readFileSync(
-    path.join(__dirname, '..', 'secrets', 'cryptospace.key'),
-    'utf8',
-);
-const certificate = fs.readFileSync(
-    path.join(__dirname, '..', 'secrets', 'cryptospace.crt'),
-    'utf8',
-);
+    httpsServer.listen(port);
 
-const credentials = { key: privateKey, cert: certificate };
-const httpsServer = https.createServer(credentials, app);
-
-httpsServer.listen(port);
-
-console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on port ${port}`);
+});

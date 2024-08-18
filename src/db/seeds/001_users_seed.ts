@@ -1,6 +1,11 @@
 import { Knex } from 'knex';
 import bcrypt from 'bcrypt';
 
+/*
+    This file is used to test the knex seed functionality.
+    In a production environment, this seed file should not be used.
+ */
+
 export async function seed(knex: Knex): Promise<void> {
     await knex('users').insert([
         {

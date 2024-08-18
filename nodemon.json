@@ -1,6 +1,7 @@
 {
-  "watch": ["src"],
-  "ext": ".ts,.js",
+  "watch": ["dist"],
+  "ext": ".js",
   "ignore": [],
-  "exec": "node -r ts-node/register --inspect=0.0.0.0:9229"
+  "exec": "node --inspect=0.0.0.0:9229 ./dist/server.js",
+  "legacyWatch": true
 }
