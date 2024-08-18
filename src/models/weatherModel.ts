@@ -53,8 +53,9 @@ const weatherModel = {
 
         const gps = isHome ? user.home_gps : user.work_gps;
 
+        const dateIsoString = new Date().toISOString().substring(0, 10);
         const response = await axios.get(
-            `https://api.openweathermap.org/data/3.0/onecall?lat=${gps.x}&lon=${gps.y}&date=${new Date().toISOString().substring(0, 10)}&appid=${api_key}&units=metric`,
+            `https://api.openweathermap.org/data/3.0/onecall?lat=${gps.x}&lon=${gps.y}&date=${dateIsoString}&appid=${api_key}&units=metric`,
         );
 
         const weatherData: WeatherData = response.data.daily[0];
