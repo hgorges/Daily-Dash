@@ -20,67 +20,138 @@
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <div class="input-container">
                 <i class="fa fa-user icon"></i>
-                <input type="text" name="username" placeholder="Username" value="<%= username; %>" required>
+                <input
+                        class="<%= errors.find(e => e.param === 'username') ? 'invalid' : '' %>"
+                        type="text"
+                        name="username"
+                        placeholder="Username"
+                        value="<%= username; %>"
+                        required>
             </div>
             <div class="input-container">
                 <i class="fa fa-solid fa-address-card icon"></i>
-                <input type="text" name="first_name" placeholder="First Name" value="<%= first_name; %>" required
-                       class="half-width">
-                <input type="text" name="last_name" placeholder="Last Name" value="<%= last_name; %>" required
-                       class="half-width">
+                <input
+                        class="half-width <%= errors.find(e => e.param === 'first_name') ? 'invalid' : '' %>"
+                        type="text"
+                        name="first_name"
+                        placeholder="First Name"
+                        value="<%= first_name; %>"
+                        required
+                >
+                <input
+                        class="half-width <%= errors.find(e => e.param === 'last_name') ? 'invalid' : '' %>"
+                        type="text"
+                        name="last_name"
+                        placeholder="Last Name"
+                        value="<%= last_name; %>"
+                        required
+                >
             </div>
             <div class="input-container">
                 <i class="fa fa-envelope icon"></i>
-                <input type="text" name="email" placeholder="E-Mail" value="<%= email; %>" required>
+                <input
+                        class="<%= errors.find(e => e.param === 'email') ? 'invalid' : '' %>"
+                        type="text"
+                        name="email"
+                        placeholder="E-Mail"
+                        value="<%= email; %>"
+                        required>
             </div>
             <div class="input-container">
                 <i class="fa fa-solid fa-house icon"></i>
-                <input type="number" name="home_latitude" placeholder="Home Latitude" value="<%= home_latitude; %>"
-                       min="-90" max="90"
-                       step="0.00001"
-                       required
-                       class="half-width">
-                <input type="number" name="home_longitude" placeholder="Home Longitude" value="<%= home_longitude; %>"
-                       min="-180" max="180"
-                       step="0.00001"
-                       required
-                       class="half-width">
+                <input
+                        class="half-width <%= errors.find(e => e.param === 'home_latitude') ? 'invalid' : '' %>"
+                        type="number"
+                        name="home_latitude"
+                        placeholder="Home Latitude"
+                        value="<%= home_latitude; %>"
+                        min="-90" max="90" step="0.00001"
+                        required
+                >
+                <input
+                        class="half-width <%= errors.find(e => e.param === 'home_longitude') ? 'invalid' : '' %>"
+                        type="number"
+                        name="home_longitude"
+                        placeholder="Home Longitude"
+                        value="<%= home_longitude; %>"
+                        min="-180" max="180" step="0.00001"
+                        required
+                >
             </div>
             <div class="input-container">
                 <i class="fa fa-solid fa-briefcase icon"></i>
-                <input type="number" name="work_latitude" placeholder="Work Latitude" value="<%= work_latitude; %>"
-                       min="-90" max="90"
-                       step="0.00001"
-                       required
-                       class="half-width">
-                <input type="number" name="work_longitude" placeholder="Work Longitude" value="<%= work_longitude; %>"
-                       min="-180" max="180"
-                       step="0.00001"
-                       required
-                       class="half-width">
+                <input
+                        class="half-width <%= errors.find(e => e.param === 'work_latitude') ? 'invalid' : '' %>"
+                        type="number"
+                        name="work_latitude"
+                        placeholder="Work Latitude"
+                        value="<%= work_latitude; %>"
+                        min="-90" max="90" step="0.00001"
+                        required
+                >
+                <input
+                        class="half-width <%= errors.find(e => e.param === 'work_longitude') ? 'invalid' : '' %>"
+                        type="number"
+                        name="work_longitude"
+                        placeholder="Work Longitude"
+                        value="<%= work_longitude; %>"
+                        min="-180" max="180" step="0.00001"
+                        required
+                >
             </div>
             <div class="input-container">
                 <i class="fa fa-calendar icon"></i>
-                <input type="text" name="calendars" placeholder="Calendars" value="<%= calendars; %>">
+                <input
+                        class="<%= errors.find(e => e.param === 'calendars') ? 'invalid' : '' %>"
+                        type="text"
+                        name="calendars"
+                        placeholder="Calendars"
+                        value="<%= calendars; %>"
+                >
             </div>
             <div class="input-container">
                 <i class="fa fa-globe icon"></i>
-                <input type="text" name="locale" placeholder="Locale (default: en-US)" value="<%= locale; %>"
-                       required>
+                <input
+                        class="<%= errors.find(e => e.param === 'locale') ? 'invalid' : '' %>"
+                        type="text"
+                        name="locale"
+                        placeholder="Locale (default: en-US)"
+                        value="<%= locale; %>"
+                        required
+                >
             </div>
             <div class="input-container">
                 <i class="fa fa-clock icon"></i>
-                <input type="text" name="time_zone" placeholder="Time Zone (default: Etc/Zulu)"
-                       value="<%= time_zone; %>" required>
+                <input
+                        class="<%= errors.find(e => e.param === 'time_zone') ? 'invalid' : '' %>"
+                        type="text"
+                        name="time_zone"
+                        placeholder="Time Zone (default: Etc/Zulu)"
+                        value="<%= time_zone; %>"
+                        required
+                >
             </div>
             <div class="input-container">
                 <i class="fa fa-lock icon"></i>
-                <input type="password" name="password" placeholder="Password" id="password" value="<%= password %>">
+                <input
+                        class="<%= errors.find(e => e.param === 'password') ? 'invalid' : '' %>"
+                        id="password"
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        value="<%= password %>"
+                >
             </div>
             <div class="input-container">
                 <i class="fa fa-solid fa-rotate-right icon"></i>
-                <input type="password" name="confirm_password" placeholder="Confirm Password" id="password-confirm"
-                       value="<%= confirm_password %>">
+                <input
+                        class="<%= errors.find(e => e.param === 'confirm_password') ? 'invalid' : '' %>"
+                        id="password-confirm"
+                        type="password"
+                        name="confirm_password"
+                        placeholder="Confirm Password"
+                        value="<%= confirm_password %>"
+                >
             </div>
             <button type="submit">Save Changes</button>
         </form>

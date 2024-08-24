@@ -3,6 +3,7 @@ import userModel from '../models/userModel';
 import mailer from '../config/mailer';
 import { renderFile } from 'ejs';
 import path from 'path';
+import { ValidationError } from '../utils/utils';
 
 export async function renderPasswordReset(
     req: Request,
@@ -10,6 +11,7 @@ export async function renderPasswordReset(
     _next: NextFunction,
     renderOptions: {
         statusCode?: number;
+        errors?: ValidationError[];
         email?: string;
     } = {},
 ): Promise<void> {
@@ -25,6 +27,7 @@ export async function renderPasswordReset(
         infoMessage: infoMessage.length > 0 ? infoMessage[0] : null,
         errorMessage: errorMessage.length > 0 ? errorMessage[0] : null,
         email: '',
+        errors: [],
         ...renderOptions,
     });
 }

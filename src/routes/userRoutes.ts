@@ -3,16 +3,16 @@ import {
     redirectFromGoogle,
     redirectToGoogle,
 } from '../middleware/google-auth';
-import { renderSettingsPage, saveSettings } from '../controller/settingsPage';
+import { renderSettingsPage, saveSettings } from '../controller/settings';
 import cors from 'cors';
 import {
     completeTodo,
     postponeTodo,
     renderDashboardPage,
     switchLocation,
-} from '../controller/dashboardPage';
-import { renderAdminPage } from '../controller/adminPage';
-import { renderNotFoundPage } from '../controller/notFoundPage';
+} from '../controller/dashboard';
+import { renderAdminPage } from '../controller/admin';
+import { renderNotFoundPage } from '../controller/notFound';
 import validateEmptyBody from '../validators/validateEmptyBody';
 import validateSettings from '../validators/validateSettings';
 

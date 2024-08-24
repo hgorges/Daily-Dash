@@ -12,6 +12,12 @@ export type AuthSession = Session & {
     googleCalendarAccessToken?: string;
 };
 
+export type ValidationError = {
+    param: string;
+    message: string | undefined;
+    value: any;
+};
+
 export const fileRoot = path.join(__dirname, '..', '..');
 
 export function validate(
@@ -28,27 +34,25 @@ export function validate(
 ): void {
     const isValid = validateFunction(req.body);
     if (!isValid && validateFunction.errors) {
-        const error = parseErrors(validateFunction.errors);
-        req.flash('error', error.map((e) => e.message).join(', '));
-        renderFunction(req, res, next, { statusCode: 422, ...req.body });
+        const errors = parseErrors(validateFunction.errors);
+        req.flash('error', errors.map((error) => error.message).join(', '));
+        renderFunction(req, res, next, {
+            statusCode: 422,
+            errors,
+            ...req.body,
+        });
         return;
     }
     next();
 }
 
 function parseErrors(validationErrors: ErrorObject[]): any[] {
-    const errors: any[] = [];
+    const errors: ValidationError[] = [];
     validationErrors.forEach((error) => {
         errors.push({
-            param:
-                error.params['missingProperty'] !== undefined
-                    ? error.params['missingProperty']
-                    : error.instancePath,
+            param: error.instancePath.replace(/[./]+/g, ''),
             message: error.message,
-            value:
-                error.params['missingProperty'] !== undefined
-                    ? null
-                    : error.data,
+            value: error.data,
         });
     });
     return errors;

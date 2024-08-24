@@ -3,7 +3,7 @@ import { JSONSchemaType } from 'ajv';
 import { NextFunction, Request, Response } from 'express-serve-static-core';
 import { validate } from '../utils/utils';
 import locale from 'locale-codes';
-import { renderSettingsPage } from '../controller/settingsPage';
+import { renderSettingsPage } from '../controller/settings';
 
 const settingsSchema: JSONSchemaType<{
     username: string;
@@ -77,6 +77,7 @@ const settingsSchema: JSONSchemaType<{
         },
         time_zone: {
             type: 'string',
+            enum: Intl.supportedValuesOf('timeZone'),
         },
         _csrf: {
             type: 'string',

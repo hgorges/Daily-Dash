@@ -2,7 +2,7 @@ import ajv from '../config/ajv';
 import { JSONSchemaType } from 'ajv';
 import { NextFunction, Request, Response } from 'express-serve-static-core';
 import { validate } from '../utils/utils';
-import { renderPasswordReset } from '../controller/passwordResetPage';
+import { renderPasswordReset } from '../controller/passwordReset';
 
 const passwordResetSchema: JSONSchemaType<{
     email: string;

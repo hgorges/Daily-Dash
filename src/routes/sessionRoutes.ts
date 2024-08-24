@@ -7,13 +7,13 @@ import validatePasswordChange from '../validators/validatePasswordChange';
 import {
     changePassword,
     renderPasswordChange,
-} from '../controller/passwordChangePage';
+} from '../controller/passwordChange';
 import {
     createPasswordResetToken,
     renderPasswordReset,
-} from '../controller/passwordResetPage';
-import { login, renderLogin } from '../controller/loginPage';
-import { renderSignup, signup } from '../controller/signupPage';
+} from '../controller/passwordReset';
+import { login, renderLogin } from '../controller/login';
+import { renderSignup, signup } from '../controller/signup';
 
 const sessionRouter = express.Router();
 

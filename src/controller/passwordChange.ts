@@ -3,6 +3,7 @@ import userModel from '../models/userModel';
 import mailer from '../config/mailer';
 import { renderFile } from 'ejs';
 import path from 'path';
+import { ValidationError } from '../utils/utils';
 
 export async function renderPasswordChange(
     req: Request,
@@ -10,6 +11,7 @@ export async function renderPasswordChange(
     _next: NextFunction,
     renderOptions: {
         statusCode?: number;
+        errors?: ValidationError[];
         password?: string;
         confirm_password?: string;
     } = {},
@@ -34,6 +36,7 @@ export async function renderPasswordChange(
         errorMessage: errorMessage.length > 0 ? errorMessage[0] : null,
         password: '',
         confirm_password: '',
+        errors: [],
         ...renderOptions,
     });
 }
@@ -49,7 +52,22 @@ export async function changePassword(
     if (password !== confirm_password) {
         req.flash('error', 'Passwords do not match!');
         req.params.passwordResetToken = passwordResetToken;
-        renderPasswordChange(req, res, next, { statusCode: 422, ...req.body });
+        renderPasswordChange(req, res, next, {
+            statusCode: 422,
+            errors: [
+                {
+                    param: 'password',
+                    message: 'Passwords do not match!',
+                    value: password,
+                },
+                {
+                    param: 'confirm_password',
+                    message: 'Passwords do not match!',
+                    value: confirm_password,
+                },
+            ],
+            ...req.body,
+        });
         return;
     }
 

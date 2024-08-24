@@ -21,28 +21,68 @@
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <div class="input-container">
                 <i class="fa fa-user icon"></i>
-                <input type="text" name="username" placeholder="Username" required value="<%= username %>">
+                <input
+                        class="<%= errors.find(e => e.param === 'username') ? 'invalid' : '' %>"
+                        type="text"
+                        name="username"
+                        placeholder="Username"
+                        value="<%= username %>"
+                        required
+                >
             </div>
             <div class="input-container">
                 <i class="fa fa-solid fa-address-card icon"></i>
-                <input type="text" name="first_name" placeholder="First Name" required class="half-width"
-                       value="<%= first_name %>">
-                <input type="text" name="last_name" placeholder="Last Name" required class="half-width"
-                       value="<%= last_name %>">
+                <input
+                        class="half-width <%= errors.find(e => e.param === 'first_name') ? 'invalid' : '' %>"
+                        type="text"
+                        name="first_name"
+                        placeholder="First Name"
+                        value="<%= first_name %>"
+                        required
+                >
+                <input
+                        class="half-width <%= errors.find(e => e.param === 'last_name') ? 'invalid' : '' %>"
+                        type="text"
+                        name="last_name"
+                        placeholder="Last Name"
+                        value="<%= last_name %>"
+                        required
+                >
             </div>
             <div class="input-container">
                 <i class="fa fa-envelope icon"></i>
-                <input type="text" name="email" placeholder="E-Mail" required value="<%= email %>">
+                <input
+                        class="<%= errors.find(e => e.param === 'email') ? 'invalid' : '' %>"
+                        type="text"
+                        name="email"
+                        placeholder="E-Mail"
+                        value="<%= email %>"
+                        required
+                >
             </div>
             <div class="input-container">
                 <i class="fa fa-lock icon"></i>
-                <input type="password" name="password" placeholder="Password" required id="password"
-                       value="<%= password %>">
+                <input
+                        class="<%= errors.find(e => e.param === 'password') ? 'invalid' : '' %>"
+                        id="password"
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        value="<%= password %>"
+                        required
+                >
             </div>
             <div class="input-container">
                 <i class="fa fa-solid fa-rotate-right icon"></i>
-                <input type="password" name="confirm_password" placeholder="Confirm Password" required
-                       id="password-confirm" value="<%= confirm_password %>">
+                <input
+                        class="<%= errors.find(e => e.param === 'confirm_password') ? 'invalid' : '' %>"
+                        id="password-confirm"
+                        type="password"
+                        name="confirm_password"
+                        placeholder="Confirm Password"
+                        value="<%= confirm_password %>"
+                        required
+                >
             </div>
             <button type="submit">Sign Up</button>
         </form>

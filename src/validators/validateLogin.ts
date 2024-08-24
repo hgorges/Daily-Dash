@@ -2,7 +2,7 @@ import ajv from '../config/ajv';
 import { JSONSchemaType } from 'ajv';
 import { NextFunction, Request, Response } from 'express-serve-static-core';
 import { validate } from '../utils/utils';
-import { renderLogin } from '../controller/loginPage';
+import { renderLogin } from '../controller/login';
 
 const loginSchema: JSONSchemaType<{
     username: string;

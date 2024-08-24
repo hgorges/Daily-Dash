@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express-serve-static-core';
 import userModel from '../models/userModel';
+import { ValidationError } from '../utils/utils';
 
 export async function renderLogin(
     req: Request,
@@ -7,6 +8,7 @@ export async function renderLogin(
     _next: NextFunction,
     renderOptions: {
         statusCode?: number;
+        errors?: ValidationError[];
         username?: string;
         password?: string;
     } = {},
@@ -24,6 +26,7 @@ export async function renderLogin(
         errorMessage: errorMessage.length > 0 ? errorMessage[0] : null,
         username: '',
         password: '',
+        errors: [],
         ...renderOptions,
     });
 }
@@ -43,7 +46,22 @@ export async function login(
     const user = await userModel.getUserForLogin(username, password);
     if (!user) {
         req.flash('error', 'Invalid username or password!');
-        renderLogin(req, res, next, { statusCode: 422, ...req.body });
+        renderLogin(req, res, next, {
+            statusCode: 422,
+            errors: [
+                {
+                    param: 'username',
+                    message: 'Invalid username or password!',
+                    value: username,
+                },
+                {
+                    param: 'password',
+                    message: 'Invalid username or password!',
+                    value: password,
+                },
+            ],
+            ...req.body,
+        });
         return;
     }
 

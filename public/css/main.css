@@ -97,6 +97,11 @@ p {
     border-left: 4px solid var(--error-color);
 }
 
+.invalid {
+    /* HACK !important */
+    border-color: red !important;
+}
+
 @media (max-width: 768px) {
     #page-content {
         height: calc(100svh - 3.5rem - 2rem);

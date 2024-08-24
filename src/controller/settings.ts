@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express-serve-static-core';
 import userModel from '../models/userModel';
+import { ValidationError } from '../utils/utils';
 
 export async function renderSettingsPage(
     req: Request,
@@ -7,6 +8,7 @@ export async function renderSettingsPage(
     _next: NextFunction,
     renderOptions: {
         statusCode?: number;
+        errors?: ValidationError[];
         username?: string;
         first_name?: string;
         last_name?: string;
@@ -40,6 +42,7 @@ export async function renderSettingsPage(
         work_longitude: user?.work_gps.y,
         password: '',
         confirm_password: '',
+        errors: [],
         ...renderOptions,
     });
 }
@@ -67,13 +70,38 @@ export async function saveSettings(
 
     if (password !== confirm_password) {
         req.flash('error', 'Passwords do not match!');
-        renderSettingsPage(req, res, next, { statusCode: 422, ...req.body });
+        renderSettingsPage(req, res, next, {
+            statusCode: 422,
+            errors: [
+                {
+                    param: 'password',
+                    message: 'Passwords do not match!',
+                    value: password,
+                },
+                {
+                    param: 'confirm_password',
+                    message: 'Passwords do not match!',
+                    value: confirm_password,
+                },
+            ],
+            ...req.body,
+        });
         return;
     }
 
-    if (password == null || password.length <= 7) {
-        req.flash('error', 'Password must be at least 8 characters long!');
-        renderSettingsPage(req, res, next, { statusCode: 422, ...req.body });
+    if (password != null && password.trim() !== '' && password.length <= 7) {
+        req.flash('error', 'Password must be at least s8 characters long!');
+        renderSettingsPage(req, res, next, {
+            statusCode: 422,
+            errors: [
+                {
+                    param: 'password',
+                    message: 'Password must be at least 8 characters long!',
+                    value: password,
+                },
+            ],
+            ...req.body,
+        });
         return;
     }
 
