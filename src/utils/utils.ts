@@ -30,7 +30,7 @@ export function validate(
     if (!isValid && validateFunction.errors) {
         const error = parseErrors(validateFunction.errors);
         req.flash('error', error.map((e) => e.message).join(', '));
-        renderFunction(req, res, next, req.body);
+        renderFunction(req, res, next, { statusCode: 422, ...req.body });
         return;
     }
     next();

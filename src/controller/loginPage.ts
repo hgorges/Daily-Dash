@@ -6,6 +6,7 @@ export async function renderLogin(
     res: Response,
     _next: NextFunction,
     renderOptions: {
+        statusCode?: number;
         username?: string;
         password?: string;
     } = {},
@@ -17,7 +18,7 @@ export async function renderLogin(
     }
     const infoMessage = req.flash('info');
     const errorMessage = req.flash('error');
-    res.render('login', {
+    res.status(renderOptions.statusCode ?? 200).render('login', {
         csrfToken: res.locals.csrfToken,
         infoMessage: infoMessage.length > 0 ? infoMessage[0] : null,
         errorMessage: errorMessage.length > 0 ? errorMessage[0] : null,
@@ -35,14 +36,14 @@ export async function login(
     const { username, password } = req.body;
 
     if (username.toLowerCase() === 'system') {
-        renderLogin(req, res, next, req.body);
+        renderLogin(req, res, next, { statusCode: 422, ...req.body });
         return;
     }
 
     const user = await userModel.getUserForLogin(username, password);
     if (!user) {
         req.flash('error', 'Invalid username or password!');
-        renderLogin(req, res, next, req.body);
+        renderLogin(req, res, next, { statusCode: 422, ...req.body });
         return;
     }
 

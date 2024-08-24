@@ -6,6 +6,7 @@ export async function renderSettingsPage(
     res: Response,
     _next: NextFunction,
     renderOptions: {
+        statusCode?: number;
         username?: string;
         first_name?: string;
         last_name?: string;
@@ -26,7 +27,7 @@ export async function renderSettingsPage(
     const infoMessage = req.flash('info');
     const errorMessage = req.flash('error');
 
-    res.render('settings', {
+    res.status(renderOptions.statusCode ?? 200).render('settings', {
         path: '/settings',
         csrfToken: res.locals.csrfToken,
         isAdmin: req.session.isAdmin,
@@ -66,13 +67,13 @@ export async function saveSettings(
 
     if (password !== confirm_password) {
         req.flash('error', 'Passwords do not match!');
-        renderSettingsPage(req, res, next, req.body);
+        renderSettingsPage(req, res, next, { statusCode: 422, ...req.body });
         return;
     }
 
     if (password == null || password.length <= 7) {
         req.flash('error', 'Password must be at least 8 characters long!');
-        renderSettingsPage(req, res, next, req.body);
+        renderSettingsPage(req, res, next, { statusCode: 422, ...req.body });
         return;
     }
 

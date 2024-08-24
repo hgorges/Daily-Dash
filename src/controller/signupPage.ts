@@ -9,6 +9,7 @@ export async function renderSignup(
     res: Response,
     _next: NextFunction,
     renderOptions: {
+        statusCode?: number;
         username?: string;
         first_name?: string;
         last_name?: string;
@@ -22,7 +23,7 @@ export async function renderSignup(
         return;
     }
     const errorMessage = req.flash('error');
-    res.render('signup', {
+    res.status(renderOptions.statusCode ?? 200).render('signup', {
         csrfToken: res.locals.csrfToken,
         errorMessage: errorMessage.length > 0 ? errorMessage[0] : null,
         username: '',
@@ -52,23 +53,23 @@ export async function signup(
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
         req.flash('error', 'Valid email is required!');
-        renderSignup(req, res, next, req.body);
+        renderSignup(req, res, next, { statusCode: 422, ...req.body });
         return;
     }
 
     if (await userModel.getUserByUsername(username)) {
         req.flash('error', 'Username is already taken!');
-        renderSignup(req, res, next, req.body);
+        renderSignup(req, res, next, { statusCode: 422, ...req.body });
         return;
     }
     if (await userModel.getUserByEmail(email)) {
         req.flash('error', 'Email is already taken!');
-        renderSignup(req, res, next, req.body);
+        renderSignup(req, res, next, { statusCode: 422, ...req.body });
         return;
     }
     if (password !== confirm_password) {
         req.flash('error', 'Passwords do not match!');
-        renderSignup(req, res, next, req.body);
+        renderSignup(req, res, next, { statusCode: 422, ...req.body });
         return;
     }
 

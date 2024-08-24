@@ -8,7 +8,10 @@ export async function renderPasswordReset(
     req: Request,
     res: Response,
     _next: NextFunction,
-    renderOptions: { email?: string } = {},
+    renderOptions: {
+        statusCode?: number;
+        email?: string;
+    } = {},
 ): Promise<void> {
     if (req.session.isAuthenticated) {
         res.redirect('/');
@@ -17,7 +20,7 @@ export async function renderPasswordReset(
     const infoMessage = req.flash('info');
     const errorMessage = req.flash('error');
 
-    res.render('password-reset', {
+    res.status(renderOptions.statusCode ?? 200).render('password-reset', {
         csrfToken: res.locals.csrfToken,
         infoMessage: infoMessage.length > 0 ? infoMessage[0] : null,
         errorMessage: errorMessage.length > 0 ? errorMessage[0] : null,

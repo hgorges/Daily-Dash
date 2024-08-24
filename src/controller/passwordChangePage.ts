@@ -9,6 +9,7 @@ export async function renderPasswordChange(
     res: Response,
     _next: NextFunction,
     renderOptions: {
+        statusCode?: number;
         password?: string;
         confirm_password?: string;
     } = {},
@@ -25,7 +26,7 @@ export async function renderPasswordChange(
     const infoMessage = req.flash('info');
     const errorMessage = req.flash('error');
 
-    res.render('password-change', {
+    res.status(renderOptions.statusCode ?? 200).render('password-change', {
         csrfToken: res.locals.csrfToken,
         userId: user.user_id,
         passwordResetToken: req.params.passwordResetToken,
@@ -48,7 +49,7 @@ export async function changePassword(
     if (password !== confirm_password) {
         req.flash('error', 'Passwords do not match!');
         req.params.passwordResetToken = passwordResetToken;
-        renderPasswordChange(req, res, next, req.body);
+        renderPasswordChange(req, res, next, { statusCode: 422, ...req.body });
         return;
     }
 
