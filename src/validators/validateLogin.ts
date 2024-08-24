@@ -12,6 +12,7 @@ const loginSchema: JSONSchemaType<{
     properties: {
         username: {
             type: 'string',
+            sanitize: (data: string) => data.trim().toLowerCase(),
         },
         password: {
             type: 'string',

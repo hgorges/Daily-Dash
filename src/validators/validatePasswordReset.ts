@@ -13,6 +13,7 @@ const passwordResetSchema: JSONSchemaType<{
         email: {
             type: 'string',
             format: 'email',
+            sanitize: (data: string) => data.trim().toLowerCase(),
         },
         _csrf: {
             type: 'string',

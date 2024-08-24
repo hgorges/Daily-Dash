@@ -20,20 +20,24 @@ const signupSchema: JSONSchemaType<{
             minLength: 3,
             maxLength: 20,
             pattern: '^[a-zA-Z0-9]*$',
+            sanitize: (data: string) => data.trim().toLowerCase(),
         },
         first_name: {
             type: 'string',
             minLength: 1,
             maxLength: 20,
+            sanitize: (data: string) => data.trim(),
         },
         last_name: {
             type: 'string',
             minLength: 1,
             maxLength: 20,
+            sanitize: (data: string) => data.trim(),
         },
         email: {
             type: 'string',
             format: 'email',
+            sanitize: (data: string) => data.trim().toLowerCase(),
         },
         password: {
             type: 'string',
