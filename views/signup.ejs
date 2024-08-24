@@ -21,25 +21,28 @@
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <div class="input-container">
                 <i class="fa fa-user icon"></i>
-                <input type="text" name="username" placeholder="Username" required>
+                <input type="text" name="username" placeholder="Username" required value="<%= username %>">
             </div>
             <div class="input-container">
                 <i class="fa fa-solid fa-address-card icon"></i>
-                <input type="text" name="first_name" placeholder="First Name" required class="half-width">
-                <input type="text" name="last_name" placeholder="Last Name" required class="half-width">
+                <input type="text" name="first_name" placeholder="First Name" required class="half-width"
+                       value="<%= first_name %>">
+                <input type="text" name="last_name" placeholder="Last Name" required class="half-width"
+                       value="<%= last_name %>">
             </div>
             <div class="input-container">
                 <i class="fa fa-envelope icon"></i>
-                <input type="text" name="email" placeholder="E-Mail" required>
+                <input type="text" name="email" placeholder="E-Mail" required value="<%= email %>">
             </div>
             <div class="input-container">
                 <i class="fa fa-lock icon"></i>
-                <input type="password" name="password" placeholder="Password" required id="password">
+                <input type="password" name="password" placeholder="Password" required id="password"
+                       value="<%= password %>">
             </div>
             <div class="input-container">
                 <i class="fa fa-solid fa-rotate-right icon"></i>
                 <input type="password" name="confirm_password" placeholder="Confirm Password" required
-                       id="password-confirm">
+                       id="password-confirm" value="<%= confirm_password %>">
             </div>
             <button type="submit">Sign Up</button>
         </form>

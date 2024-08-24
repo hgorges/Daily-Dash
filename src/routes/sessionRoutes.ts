@@ -1,16 +1,19 @@
 import express from 'express';
+import { checkAuthentication, logoutUser } from '../middleware/auth';
+import validateLogin from '../validators/validateLogin';
+import validateSignup from '../validators/validateSignup';
+import validatePasswordReset from '../validators/validatePasswordReset';
+import validatePasswordChange from '../validators/validatePasswordChange';
 import {
     changePassword,
-    checkAuthentication,
-    createPasswordResetToken,
-    login,
-    logoutUser,
-    renderLogin,
     renderPasswordChange,
+} from '../controller/passwordChangePage';
+import {
+    createPasswordResetToken,
     renderPasswordReset,
-    renderSignup,
-    signup,
-} from '../middleware/auth';
+} from '../controller/passwordResetPage';
+import { login, renderLogin } from '../controller/loginPage';
+import { renderSignup, signup } from '../controller/signupPage';
 
 const sessionRouter = express.Router();
 
@@ -22,19 +25,27 @@ sessionRouter.use((req, _res, next) => {
 
 sessionRouter.get('/password-reset', renderPasswordReset);
 
-sessionRouter.post('/password-reset', createPasswordResetToken);
+sessionRouter.post(
+    '/password-reset',
+    validatePasswordReset,
+    createPasswordResetToken,
+);
 
 sessionRouter.get('/password-change/:passwordResetToken', renderPasswordChange);
 
-sessionRouter.post('/password-change/:passwordResetToken', changePassword);
+sessionRouter.post(
+    '/password-change/:passwordResetToken',
+    validatePasswordChange,
+    changePassword,
+);
 
 sessionRouter.get('/login', renderLogin);
 
-sessionRouter.post('/login', login);
+sessionRouter.post('/login', validateLogin, login);
 
 sessionRouter.get('/signup', renderSignup);
 
-sessionRouter.post('/signup', signup);
+sessionRouter.post('/signup', validateSignup, signup);
 
 sessionRouter.get('/logout', logoutUser);
 

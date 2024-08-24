@@ -13,6 +13,8 @@ import {
 } from '../controller/dashboardPage';
 import { renderAdminPage } from '../controller/adminPage';
 import { renderNotFoundPage } from '../controller/notFoundPage';
+import validateEmptyBody from '../validators/validateEmptyBody';
+import validateSettings from '../validators/validateSettings';
 
 const userRouter = express.Router();
 
@@ -20,19 +22,19 @@ userRouter.get('/', renderDashboardPage);
 
 userRouter.get('/admin', renderAdminPage);
 
-userRouter.post('/switch-location', switchLocation);
+userRouter.post('/switch-location', validateEmptyBody, switchLocation);
 
-userRouter.patch('/todos/:id/complete', completeTodo);
+userRouter.patch('/todos/:id/complete', validateEmptyBody, completeTodo);
 
-userRouter.patch('/todos/:id/postpone', postponeTodo);
+userRouter.patch('/todos/:id/postpone', validateEmptyBody, postponeTodo);
 
 userRouter.get('/google-auth', cors(), redirectFromGoogle);
 
-userRouter.post('/google', cors(), redirectToGoogle);
+userRouter.post('/google', validateEmptyBody, cors(), redirectToGoogle);
 
 userRouter.get('/settings', renderSettingsPage);
 
-userRouter.post('/settings', saveSettings);
+userRouter.post('/settings', validateSettings, saveSettings);
 
 userRouter.get('/not-found', renderNotFoundPage);
 

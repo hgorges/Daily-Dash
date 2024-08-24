@@ -9,64 +9,82 @@
 <body>
 <%- include('includes/navigation.ejs') %>
 <div class="settings-page">
-    <form action="/settings" method="POST">
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-        <div class="input-container">
-            <i class="fa fa-user icon"></i>
-            <input type="text" name="username" placeholder="Username" value="<%= user.username; %>" required>
-        </div>
-        <div class="input-container">
-            <i class="fa fa-solid fa-address-card icon"></i>
-            <input type="text" name="first_name" placeholder="First Name" value="<%= user.first_name; %>" required
-                   class="half-width">
-            <input type="text" name="last_name" placeholder="Last Name" value="<%= user.last_name; %>" required
-                   class="half-width">
-        </div>
-        <div class="input-container">
-            <i class="fa fa-envelope icon"></i>
-            <input type="text" name="email" placeholder="E-Mail" value="<%= user.email; %>" required>
-        </div>
-        <div class="input-container">
-            <i class="fa fa-solid fa-house icon"></i>
-            <input type="text" name="home_latitude" placeholder="Home Latitude" value="<%= user.home_gps?.x; %>"
-                   required
-                   class="half-width">
-            <input type="text" name="home_longitude" placeholder="Home Longitude" value="<%= user.home_gps?.y; %>"
-                   required
-                   class="half-width">
-        </div>
-        <div class="input-container">
-            <i class="fa fa-solid fa-briefcase icon"></i>
-            <input type="text" name="work_latitude" placeholder="Work Latitude" value="<%= user.work_gps?.x; %>"
-                   required
-                   class="half-width">
-            <input type="text" name="work_longitude" placeholder="Work Longitude" value="<%= user.work_gps?.y; %>"
-                   required
-                   class="half-width">
-        </div>
-        <div class="input-container">
-            <i class="fa fa-calendar icon"></i>
-            <input type="text" name="calendars" placeholder="Calendars" value="<%= user.calendars; %>">
-        </div>
-        <div class="input-container">
-            <i class="fa fa-globe icon"></i>
-            <input type="text" name="locale" placeholder="Locale (default: en-US)" value="<%= user.locale; %>" required>
-        </div>
-        <div class="input-container">
-            <i class="fa fa-clock icon"></i>
-            <input type="text" name="time_zone" placeholder="Time Zone (default: Etc/Zulu)"
-                   value="<%= user.time_zone; %>" required>
-        </div>
-        <div class="input-container">
-            <i class="fa fa-lock icon"></i>
-            <input type="password" name="password" placeholder="Password" id="password">
-        </div>
-        <div class="input-container">
-            <i class="fa fa-solid fa-rotate-right icon"></i>
-            <input type="password" name="confirm_password" placeholder="Confirm Password" id="password-confirm">
-        </div>
-        <button type="submit">Save Changes</button>
-    </form>
+    <div class="settings-area">
+        <% if(infoMessage) { %>
+            <div class="info-message"><%= infoMessage; %></div>
+        <% } %>
+        <% if(errorMessage) { %>
+            <div class="error-message"><%= errorMessage; %></div>
+        <% } %>
+        <form action="/settings" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <div class="input-container">
+                <i class="fa fa-user icon"></i>
+                <input type="text" name="username" placeholder="Username" value="<%= username; %>" required>
+            </div>
+            <div class="input-container">
+                <i class="fa fa-solid fa-address-card icon"></i>
+                <input type="text" name="first_name" placeholder="First Name" value="<%= first_name; %>" required
+                       class="half-width">
+                <input type="text" name="last_name" placeholder="Last Name" value="<%= last_name; %>" required
+                       class="half-width">
+            </div>
+            <div class="input-container">
+                <i class="fa fa-envelope icon"></i>
+                <input type="text" name="email" placeholder="E-Mail" value="<%= email; %>" required>
+            </div>
+            <div class="input-container">
+                <i class="fa fa-solid fa-house icon"></i>
+                <input type="number" name="home_latitude" placeholder="Home Latitude" value="<%= home_latitude; %>"
+                       min="-90" max="90"
+                       step="0.00001"
+                       required
+                       class="half-width">
+                <input type="number" name="home_longitude" placeholder="Home Longitude" value="<%= home_longitude; %>"
+                       min="-180" max="180"
+                       step="0.00001"
+                       required
+                       class="half-width">
+            </div>
+            <div class="input-container">
+                <i class="fa fa-solid fa-briefcase icon"></i>
+                <input type="number" name="work_latitude" placeholder="Work Latitude" value="<%= work_latitude; %>"
+                       min="-90" max="90"
+                       step="0.00001"
+                       required
+                       class="half-width">
+                <input type="number" name="work_longitude" placeholder="Work Longitude" value="<%= work_longitude; %>"
+                       min="-180" max="180"
+                       step="0.00001"
+                       required
+                       class="half-width">
+            </div>
+            <div class="input-container">
+                <i class="fa fa-calendar icon"></i>
+                <input type="text" name="calendars" placeholder="Calendars" value="<%= calendars; %>">
+            </div>
+            <div class="input-container">
+                <i class="fa fa-globe icon"></i>
+                <input type="text" name="locale" placeholder="Locale (default: en-US)" value="<%= locale; %>"
+                       required>
+            </div>
+            <div class="input-container">
+                <i class="fa fa-clock icon"></i>
+                <input type="text" name="time_zone" placeholder="Time Zone (default: Etc/Zulu)"
+                       value="<%= time_zone; %>" required>
+            </div>
+            <div class="input-container">
+                <i class="fa fa-lock icon"></i>
+                <input type="password" name="password" placeholder="Password" id="password" value="<%= password %>">
+            </div>
+            <div class="input-container">
+                <i class="fa fa-solid fa-rotate-right icon"></i>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" id="password-confirm"
+                       value="<%= confirm_password %>">
+            </div>
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
 </div>
 
 <%- include('includes/end.ejs') %>

@@ -10,6 +10,8 @@ import { fileRoot } from '../utils/utils';
 
 const configRouter = express.Router();
 
+configRouter.use(express.json());
+
 configRouter.use(bodyParser.urlencoded({ extended: false }));
 
 configRouter.use(favicon(path.join(fileRoot, 'public', 'favicon.ico')));
