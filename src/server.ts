@@ -8,6 +8,7 @@ import knexConfig from './db/knexfile';
 import configRouter from './routes/configRoutes';
 import sessionRouter from './routes/sessionRoutes';
 import userRouter from './routes/userRoutes';
+import { errorHandler } from './controller/error';
 
 // Loading environment variables
 dotenv.config({ path: '../secrets/.env' });
@@ -22,6 +23,7 @@ db.migrate.latest().finally(() => {
     app.use(configRouter);
     app.use(sessionRouter);
     app.use(userRouter);
+    app.use(errorHandler);
 
     const privateKey = fs.readFileSync(
         path.join(__dirname, '..', 'secrets', 'cryptospace.key'),

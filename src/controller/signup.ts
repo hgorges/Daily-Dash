@@ -70,7 +70,11 @@ export async function signup(
         return;
     }
 
-    if (await userModel.getUserByUsername(username)) {
+    if (
+        await userModel.getUserByUsername(username).catch((error) => {
+            next(new Error(error));
+        })
+    ) {
         req.flash('error', 'Username is already taken!');
         renderSignup(req, res, next, {
             statusCode: 422,
@@ -85,7 +89,11 @@ export async function signup(
         });
         return;
     }
-    if (await userModel.getUserByEmail(email)) {
+    if (
+        await userModel.getUserByEmail(email).catch((error) => {
+            next(new Error(error));
+        })
+    ) {
         req.flash('error', 'Email is already taken!');
         renderSignup(req, res, next, {
             statusCode: 422,
@@ -121,14 +129,11 @@ export async function signup(
         return;
     }
 
-    await userModel.createUser(
-        username,
-        firstName,
-        lastName,
-        email,
-        password,
-        username,
-    );
+    await userModel
+        .createUser(username, firstName, lastName, email, password, username)
+        .catch((error) => {
+            next(new Error(error));
+        });
 
     // Do not await the mailer
     mailer.sendMail({

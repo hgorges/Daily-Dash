@@ -43,7 +43,11 @@ export async function login(
         return;
     }
 
-    const user = await userModel.getUserForLogin(username, password);
+    const user = await userModel
+        .getUserForLogin(username, password)
+        .catch((error) => {
+            next(new Error(error));
+        });
     if (!user) {
         req.flash('error', 'Invalid username or password!');
         renderLogin(req, res, next, {

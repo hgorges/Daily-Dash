@@ -12,9 +12,10 @@ import {
     switchLocation,
 } from '../controller/dashboard';
 import { renderAdminPage } from '../controller/admin';
-import { renderNotFoundPage } from '../controller/notFound';
 import validateEmptyBody from '../validators/validateEmptyBody';
 import validateSettings from '../validators/validateSettings';
+import { renderNotFoundPage } from '../controller/notFound';
+import { renderErrorPage } from '../controller/error';
 
 const userRouter = express.Router();
 
@@ -37,6 +38,8 @@ userRouter.get('/settings', renderSettingsPage);
 userRouter.post('/settings', validateSettings, saveSettings);
 
 userRouter.get('/not-found', renderNotFoundPage);
+
+userRouter.get('/error', renderErrorPage);
 
 // Middleware to redirect to /not-found
 userRouter.use((req, res) => {

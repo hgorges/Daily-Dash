@@ -55,7 +55,7 @@ p {
     font-size: small;
 }
 
-.not-found {
+.error {
     display: flex;
     justify-content: center;
     align-items: center;
