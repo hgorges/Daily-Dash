@@ -21,6 +21,9 @@ const userRouter = express.Router();
 
 userRouter.get('/', renderDashboardPage);
 
+// TODO add route for daily briefing pdf to download and/or mail to user
+// utilize fs.createReadStream(path).pipe(res) to download file (and mail?)
+
 userRouter.get('/admin', renderAdminPage);
 
 userRouter.post('/switch-location', validateEmptyBody, switchLocation);
