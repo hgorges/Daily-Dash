@@ -36,6 +36,7 @@ temperatureRange.addEventListener('click', function () {
         },
     })
         .then((_response) => {
+            // TODO Manipulate the DOM without reloading the page
             window.location.reload();
         })
         .catch((error) => {
