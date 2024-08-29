@@ -17,6 +17,7 @@ export function errorHandler(
     res: Response,
     _next: NextFunction,
 ): void {
+    // TODO render error page here to allow custom status codes
     console.error(error);
     res.redirect(`/error`);
 }
