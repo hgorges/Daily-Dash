@@ -1,6 +1,9 @@
 import { Task, TodoistApi } from '@doist/todoist-api-typescript';
 import assert from 'node:assert';
 import { db } from '../server';
+import userModel from './userModel';
+import { formatInTimeZone } from 'date-fns-tz';
+import { add } from 'date-fns';
 
 const todoModel = {
     getTodoistApi(apiKey: string) {
@@ -43,10 +46,14 @@ const todoModel = {
         const api_key = await this.getApiKey(username);
         assert(api_key != null, 'Todoist api_key not found');
 
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
+        const user = await userModel.getUserByUsername(username);
+        assert(user != null, 'User not found');
+
+        const { time_zone } = user;
+
+        const tomorrow = add(new Date(), { days: 1 });
         await this.getTodoistApi(api_key).updateTask(id, {
-            dueDate: tomorrow.toISOString().slice(0, 10),
+            dueDate: formatInTimeZone(tomorrow, time_zone, 'yyyy-MM-dd'),
         });
     },
 };

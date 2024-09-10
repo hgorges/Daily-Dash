@@ -16,8 +16,8 @@
         <h2 class="heading">News</h2>
         <div class="content">
             <% newsEntries.forEach(entry => { %>
-                <a class="news-links" href="<%= entry.link; %>">
-                    <div class="news-entry">
+                <a class="news-links" href="<%= entry.link; %>" draggable="false">
+                    <div class="news-entry" draggable="false">
                         <h3><%= entry.headline; %></h3>
                     </div>
                 </a>
@@ -31,7 +31,8 @@
                 <div class="weather-descriptions">
                     <% weatherData.weather.forEach(w => { %>
                         <span class="weather-description"><%= w.description; %> <img src="<%= w.iconUrl; %>"
-                                                                                     alt="<%= w.description; %>"></span>
+                                                                                     alt="<%= w.description; %>"
+                                                                                     draggable="false"></span>
                     <% }); %>
                 </div>
                 <div id="temperature-range">
@@ -142,7 +143,7 @@
             <% } else { %>
                 <div class="events">
                     <% events.forEach(function (event, index) { %>
-                        <div class="event <%= `event-${index}` %>">
+                        <div class="event <%= `event-${index}` %>" draggable="false">
                             <% if(event.color) { %>
                                 <style nonce="<%= cspNonce %>">
                                     .<%= `event-${index}`; %> {
@@ -150,9 +151,9 @@
                                     }
                                 </style>
                             <% } %>
-                            <h3><%= event.summary; %></h3>
+                            <h3 draggable="false"><%= event.summary; %></h3>
                             <% if (event.start.dateTime && event.end.dateTime) { %>
-                                <p><%= event.start.dateTime; %> - <%= event.end.dateTime; %></p>
+                                <p draggable="false"><%= event.start.dateTime; %> - <%= event.end.dateTime; %></p>
                             <% } %>
                         </div>
                     <% }); %>
@@ -163,11 +164,12 @@
     <div class='widget' id="apod-widget">
         <h2 class="heading" id="apod-heading">Astronomy Picture of the Day</h2>
         <p id="apod-title"><%= apodTitle; %></p>
-        <a id="apod-link" href="<%= apodLink; %>">
-            <img id="apod-image" src="<%= apodImageLink; %>" alt="<%= apodTitle; %>"></img>
+        <a id="apod-link" href="<%= apodLink; %>" draggable="false">
+            <img id="apod-image" src="<%= apodImageLink; %>" alt="<%= apodTitle; %>" draggable="false"></img>
         </a>
     </div>
 </div>
 
+<script src="js/drag-drop-touch.esm.js?autoload" type="module"></script>
 <script src="js/dashboard.js"></script>
 <%- include('includes/end.ejs') %>

@@ -13,6 +13,9 @@ export type User = {
     password_reset_token_expiration: Date | null;
     home_gps: { x: number; y: number };
     work_gps: { x: number; y: number };
+    calendars: string[];
+    locale: string;
+    time_zone: string;
     created_at: Date;
     created_by: string;
     updated_at: Date;

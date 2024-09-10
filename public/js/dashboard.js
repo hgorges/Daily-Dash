@@ -49,8 +49,13 @@ function completeTodo() {
 
     todoItems.forEach((item) => {
         item.setAttribute('draggable', true);
+
         item.addEventListener('dragstart', function (e) {
             e.dataTransfer.setData('text/plain', item.id);
+        });
+
+        item.addEventListener('dragend', function (e) {
+            e.target.classList.remove('dragging');
         });
     });
 
@@ -63,10 +68,6 @@ function completeTodo() {
 
     completedZone.addEventListener('dragleave', () => {
         completedZone.classList.remove('drag-over');
-    });
-
-    completedZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
     });
 
     completedZone.addEventListener('drop', function (e) {
@@ -97,10 +98,6 @@ function completeTodo() {
 
     postponedZone.addEventListener('dragleave', () => {
         postponedZone.classList.remove('drag-over');
-    });
-
-    postponedZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
     });
 
     postponedZone.addEventListener('drop', function (e) {
