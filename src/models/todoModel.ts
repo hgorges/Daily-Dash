@@ -31,7 +31,7 @@ const todoModel = {
         }
 
         return this.getTodoistApi(api_key).getTasks({
-            filter: 'overdue | today',
+            filter: 'due before: today | overdue | today',
         });
     },
 
