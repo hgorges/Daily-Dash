@@ -27,12 +27,6 @@ export async function redirectToGoogle(
         redirectUri,
     });
 
-    console.log(
-        oauth2Client.generateAuthUrl({
-            access_type: 'offline',
-            scope: SCOPES,
-        }),
-    );
     res.redirect(
         oauth2Client.generateAuthUrl({
             access_type: 'offline',

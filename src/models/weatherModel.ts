@@ -51,7 +51,8 @@ const weatherModel = {
             return null;
         }
 
-        const gps = isHome ? user.home_gps : user.work_gps;
+        // Get the GPS coordinates of the user's destination (not current location)
+        const gps = isHome ? user.work_gps : user.home_gps;
 
         const dateIsoString = new Date().toISOString().substring(0, 10);
         const response = await axios.get(
