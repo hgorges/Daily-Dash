@@ -7,6 +7,7 @@ import type { ValidateFunction } from 'ajv/dist/types';
 export type AuthSession = Session & {
     username: string;
     isAdmin: boolean;
+    isApproved: boolean;
     isAuthenticated: boolean;
     isHome: boolean;
     googleCalendarAccessToken?: string;

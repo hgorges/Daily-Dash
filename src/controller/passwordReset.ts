@@ -53,7 +53,7 @@ export async function createPasswordResetToken(
                     username: user.username,
                     firstName: user.first_name,
                     lastName: user.last_name,
-                    resetLink: `https://cryptospace.dev/password-change/${randomUuid}`,
+                    resetLink: `https://daily-dash.cryptospace.dev/password-change/${randomUuid}`,
                 },
             ),
         });

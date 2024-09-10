@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express-serve-static-core';
+import { logger } from '../config/logger';
 
 export function renderErrorPage(
     req: Request,
@@ -18,6 +19,6 @@ export function errorHandler(
     _next: NextFunction,
 ): void {
     // TODO render error page here to allow custom status codes
-    console.error(error);
+    logger.error(error);
     res.redirect(`/error`);
 }

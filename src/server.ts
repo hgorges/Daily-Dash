@@ -9,6 +9,7 @@ import configRouter from './routes/configRoutes';
 import sessionRouter from './routes/sessionRoutes';
 import userRouter from './routes/userRoutes';
 import { errorHandler } from './controller/error';
+import { logger } from './config/logger';
 
 // Loading environment variables
 dotenv.config({ path: '../secrets/.env' });
@@ -39,5 +40,5 @@ db.migrate.latest().finally(() => {
 
     httpsServer.listen(port);
 
-    console.log(`Server is running on port ${port}`);
+    logger.info(`Server is running on port ${port}`);
 });

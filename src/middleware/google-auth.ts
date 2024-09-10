@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express-serve-static-core';
 import fs from 'fs';
 import { google } from 'googleapis';
 import path from 'path';
+import { logger } from '../config/logger';
 
 const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
 const OAuth2SecretsPath = path.join(
@@ -26,6 +27,12 @@ export async function redirectToGoogle(
         redirectUri,
     });
 
+    console.log(
+        oauth2Client.generateAuthUrl({
+            access_type: 'offline',
+            scope: SCOPES,
+        }),
+    );
     res.redirect(
         oauth2Client.generateAuthUrl({
             access_type: 'offline',
@@ -65,6 +72,6 @@ async function getGoogleAuthToken(req: Request, authorizationCode: string) {
         const { access_token } = accessTokenResponse.data;
         req.session.googleCalendarAccessToken = access_token;
     } catch (error) {
-        console.error('Error getting token: ', error);
+        logger.error('Error getting token: ', error);
     }
 }

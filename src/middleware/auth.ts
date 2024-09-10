@@ -7,7 +7,7 @@ export async function checkAuthentication(
     res: Response,
     next: NextFunction,
 ): Promise<void> {
-    if (req.session.isAuthenticated) {
+    if (req.session.isAuthenticated && req.session.isApproved) {
         const user = await userModel.getUserByUsername(req.session.username);
         assert(user, 'User not found in database');
 

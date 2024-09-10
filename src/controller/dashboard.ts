@@ -14,6 +14,7 @@ export async function renderDashboardPage(
     res.status(200).render('dashboard', {
         path: '/',
         csrfToken: res.locals.csrfToken,
+        cspNonce: res.locals.cspNonce,
         isAdmin: req.session.isAdmin,
         ...(await newsModel.getNewsData()),
         weatherData: await weatherModel.getWeatherData(

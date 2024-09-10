@@ -21,6 +21,7 @@ export async function seed(knex: Knex): Promise<void> {
             created_by: 'system',
             updated_at: knex.raw('now()'),
             updated_by: 'system',
+            is_approved: false,
         },
         {
             username: 'test',
@@ -35,6 +36,7 @@ export async function seed(knex: Knex): Promise<void> {
             created_by: 'system',
             updated_at: knex.raw('now()'),
             updated_by: 'system',
+            is_approved: false,
         },
     ]);
 }

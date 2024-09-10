@@ -11,11 +11,12 @@ import {
     renderDashboardPage,
     switchLocation,
 } from '../controller/dashboard';
-import { renderAdminPage } from '../controller/admin';
+import { approveUser, lockUser, renderAdminPage } from '../controller/admin';
 import validateEmptyBody from '../validators/validateEmptyBody';
 import validateSettings from '../validators/validateSettings';
 import { renderNotFoundPage } from '../controller/notFound';
 import { renderErrorPage } from '../controller/error';
+import { logger } from '../config/logger';
 
 const userRouter = express.Router();
 
@@ -25,6 +26,10 @@ userRouter.get('/', renderDashboardPage);
 // utilize fs.createReadStream(path).pipe(res) to download file (and mail?)
 
 userRouter.get('/admin', renderAdminPage);
+
+userRouter.post('/admin/approve-user/:id', approveUser);
+
+userRouter.post('/admin/lock-user/:id', lockUser);
 
 userRouter.post('/switch-location', validateEmptyBody, switchLocation);
 
@@ -46,7 +51,7 @@ userRouter.get('/error', renderErrorPage);
 
 // Middleware to redirect to /not-found
 userRouter.use((req, res) => {
-    console.log(`Redirecting from ${req.url} to /not-found`);
+    logger.info(`Redirecting from ${req.url} to /not-found`);
     res.redirect('/not-found');
 });
 

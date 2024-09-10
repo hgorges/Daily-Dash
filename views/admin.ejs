@@ -1,28 +1,36 @@
 <%- include('includes/head.ejs') %>
 <link rel="stylesheet" href="/css/content/admin.css">
+<meta name="csrf-token" content="<%= csrfToken; %>">
 </head>
 
 <body>
 <%- include('includes/navigation.ejs') %>
 
-<div class="content-container">
-    <div id="dashboard-summary">
-        <h2>Dashboard Summary</h2>
-        <div id="summary-stats">
-            <div class="stat">
-                <span class="stat-title">Total Users:</span>
-                <span class="stat-value">TODO</span>
-            </div>
-        </div>
+<div id="user-management">
+    <div id="approved-users" class="user-view">
+        <h2>Approved Users</h2>
+        <ul id="approved-users-list">
+            <% approvedUsers.forEach(user => { %>
+                <li>
+                    <%= user.username; %> (<%= user.email; %>)
+                    <button class="admin-button lock-button" data-user-id="<%= user.id; %>">Lock</button>
+                </li>
+            <% }); %>
+        </ul>
     </div>
 
-    <div id="user-list">
-        <h2>User List</h2>
-        <ul>
-            <li>TODO</li>
+    <div id="locked-users" class="user-view">
+        <h2>Locked Users</h2>
+        <ul id="locked-users-list">
+            <% lockedUsers.forEach(user => { %>
+                <li>
+                    <%= user.username; %> (<%= user.email; %>)
+                    <button class="admin-button approve-button" data-user-id="<%= user.id; %>">Approve</button>
+                </li>
+            <% }); %>
         </ul>
     </div>
 </div>
 
-<script src="js/dashboard.js"></script>
+<script src="js/admin.js"></script>
 <%- include('includes/end.ejs') %>

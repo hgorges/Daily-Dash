@@ -14,12 +14,13 @@ import {
 } from '../controller/passwordReset';
 import { login, renderLogin } from '../controller/login';
 import { renderSignup, signup } from '../controller/signup';
+import { logger } from '../config/logger';
 
 const sessionRouter = express.Router();
 
 // Middleware to log requests
 sessionRouter.use((req, _res, next) => {
-    console.log(`${req.method} ${req.url} called`);
+    logger.info(`${req.method} ${req.url} called`);
     next();
 });
 

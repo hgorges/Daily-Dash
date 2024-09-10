@@ -69,8 +69,19 @@ export async function login(
         return;
     }
 
+    if (!user.is_approved) {
+        req.flash('error', 'Your account has not been approved yet!');
+        renderLogin(req, res, next, {
+            statusCode: 403,
+            errors: [],
+            ...req.body,
+        });
+        return;
+    }
+
     req.session.username = user.username;
     req.session.isAdmin = user.is_admin;
+    req.session.isApproved = user.is_approved;
     req.session.isAuthenticated = true;
     req.session.isHome = true;
     req.session.save();

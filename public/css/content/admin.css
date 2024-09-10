@@ -1,76 +1,66 @@
-.content-container {
-    display: flex;
+#user-management {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     justify-content: space-between;
+    overflow: auto;
 }
 
-#dashboard-summary,
-#user-list {
-    flex: 1;
-    margin: 10px;
-}
-
-#dashboard-summary {
-    background-color: #fff;
+.user-view {
+    gap: 20px;
+    max-width: 1200px;
+    margin: 20px;
+    padding: 20px;
+    background-color: var(--background-color);
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 20px;
 }
 
-#dashboard-summary h2 {
-    color: #333;
-    margin-top: 0;
-}
-
-.stat {
+#user-management h2 {
+    font-size: 1.5em;
+    color: var(--primary-color);
     margin-bottom: 10px;
 }
 
-.stat-title {
-    font-weight: bold;
-}
-
-.stat-value {
-    float: right;
-}
-
-#user-list {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-}
-
-#user-list h2 {
-    color: #333;
-    margin-top: 0;
-}
-
-#user-list ul {
+#user-management ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
-#user-list li {
-    border-bottom: 1px solid #eee;
-    padding: 10px 0;
+#user-management li {
+    color: var(--primary-color);
+    background-color: var(--secondary-color);
+    border: 1px solid var(--primary-color);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-#user-list li:last-child {
-    border-bottom: none;
+.admin-button {
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    border: none;
+    padding: 5px 10px;
+    margin: 0 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: large;
 }
 
-#user-list a {
-    color: #007bff;
-    text-decoration: none;
+.admin-button:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
 }
 
-#user-list a:hover {
-    text-decoration: underline;
-}
-
-.stat:after {
-    content: '';
-    display: table;
-    clear: both;
+@media (max-width: 768px) {
+    #user-management {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+        justify-content: space-between;
+    }
 }

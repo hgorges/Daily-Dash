@@ -141,12 +141,15 @@
                 </form>
             <% } else { %>
                 <div class="events">
-                    <% events.forEach(function (event) { %>
-                        <div class="event"
-                        <% if(event.color) { %>
-                             style="<%= `background-color:${event.color};`; %>"
-                                <% } %>
-                        >
+                    <% events.forEach(function (event, index) { %>
+                        <div class="event <%= `event-${index}` %>">
+                            <% if(event.color) { %>
+                                <style nonce="<%= cspNonce %>">
+                                    .<%= `event-${index}`; %> {
+                                        background-color: <%= event.color %>;
+                                    }
+                                </style>
+                            <% } %>
                             <h3><%= event.summary; %></h3>
                             <% if (event.start.dateTime && event.end.dateTime) { %>
                                 <p><%= event.start.dateTime; %> - <%= event.end.dateTime; %></p>

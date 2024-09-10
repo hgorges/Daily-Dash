@@ -17,6 +17,7 @@ export type User = {
     created_by: string;
     updated_at: Date;
     updated_by: string;
+    is_approved: boolean;
 };
 
 const userModel = {
@@ -120,6 +121,12 @@ const userModel = {
         return bcrypt.hash(password, salt);
     },
 
+    async getUsersByApprovalState(
+        is_approved: boolean,
+    ): Promise<User[] | undefined> {
+        return db<User>('users').where({ is_approved });
+    },
+
     async getUserForLogin(
         username: string,
         password: string,
@@ -195,6 +202,13 @@ const userModel = {
                     password_reset_token_expiration: null,
                 }).orWhere('password_reset_token_expiration', '<', new Date());
             });
+    },
+
+    async updateUserApprovalStatus(
+        user_id: string,
+        is_approved: boolean,
+    ): Promise<void> {
+        await db('users').update({ is_approved }).where({ user_id });
     },
 };
 

@@ -29,6 +29,7 @@ export async function up(knex: Knex): Promise<void> {
         table.string('created_by', 30).defaultTo('system').notNullable();
         table.dateTime('updated_at').defaultTo('now()').notNullable();
         table.string('updated_by', 30).defaultTo('system').notNullable();
+        table.boolean('is_approved').defaultTo(false).notNullable();
     });
     await knex.raw(/* sql */ `ALTER TABLE "users" OWNER TO postgres;`);
 }
