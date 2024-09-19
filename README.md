@@ -25,13 +25,13 @@ Due to its experimental nature, this repository will not serve as an application
 ### Clone the repository
 
 ```bash
-git clone https://github.com/hgorges/Daily-Dash.git
+git clone https://github.com/hgorges/daily-dash.git
 ```
 
 ### Navigate to the project directory
 
 ```bash
-cd Daily-Dash
+cd daily-dash
 ```
 
 ### Install the dependencies
