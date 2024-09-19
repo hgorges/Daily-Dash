@@ -1,4 +1,4 @@
-# DailyDash
+# Daily Dash
 
 This repository functions as a versatile platform for experimenting with various technologies, including Docker, EJS, Google API and general web development methodologies.
 
@@ -25,13 +25,13 @@ Due to its experimental nature, this repository will not serve as an application
 ### Clone the repository
 
 ```bash
-git clone https://github.com/hgorges/DailyDash.git
+git clone https://github.com/hgorges/Daily-Dash.git
 ```
 
 ### Navigate to the project directory
 
 ```bash
-cd DailyDash
+cd Daily-Dash
 ```
 
 ### Install the dependencies
